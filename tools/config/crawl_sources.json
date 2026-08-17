@@ -1,0 +1,211 @@
+{
+  "schemaVersion": "1.0.0",
+  "note": "Configuration des 5 sources designees + miroirs. Statuts releves le 2026-08-16. Les echecs d'exploration ne sont jamais fatals : un site bloque est journalise et la pipeline continue.",
+  "politeness": {
+    "userAgent": "MY-Algeria-BAC-content-pipeline/1.0 (educational archive; contact via repo)",
+    "delayMs": 900,
+    "maxPagesPerSite": 60,
+    "maxItemsPerSite": 600,
+    "maxBytesPerFile": 52428800
+  },
+  "defaults": {
+    "type": "website",
+    "level": "3AS",
+    "subjectId": "french",
+    "verified": false
+  },
+  "sites": [
+    {
+      "id": "dzexams",
+      "name": "DzExams",
+      "type": "website",
+      "baseUrl": "https://www.dzexams.com",
+      "mirrorBaseUrls": [
+        "https://www.dzexams.pro"
+      ],
+      "level": "3as",
+      "subjectPath": "/ar/3as/francais",
+      "language": "ar",
+      "status": "live",
+      "categoriesNote": "Fichiers : فراض / اختبارات x (الفصل 1/2/3) x (شعب علمية / شعب أدبية) ; دروس وملخصات ; ملفات ووثائق بيداغوجية ; ملفات خارجية.",
+      "categoryCounts": {
+        "frood_t1_sciences": 14,
+        "exam_t1_sciences": 36,
+        "frood_t2_sciences": 5,
+        "exam_t2_sciences": 33,
+        "exam_t3_sciences": 46,
+        "frood_t1_lettres": 17,
+        "exam_t1_lettres": 49,
+        "frood_t2_lettres": 18,
+        "exam_t2_lettres": 31,
+        "frood_t3_lettres": 2,
+        "exam_t3_lettres": 49,
+        "lessons_summaries": 19,
+        "pedagogical_documents": 9,
+        "external_documents": 71
+      },
+      "categoryKeywords": [
+        "فرض",
+        "فراق",
+        "اختبار",
+        "امتحان",
+        "درس",
+        "ملخص",
+        "بيداغوج",
+        "خارج"
+      ],
+      "trimesterKeywords": {
+        "1": [
+          "الاول",
+          "الأول",
+          "premier",
+          "1er",
+          "1re",
+          "فصل اول",
+          "الفصل 1"
+        ],
+        "2": [
+          "الثاني",
+          "deuxième",
+          "2e",
+          "2eme",
+          "فصل ثاني",
+          "الفصل 2"
+        ],
+        "3": [
+          "الثالث",
+          "troisième",
+          "3e",
+          "3eme",
+          "فصل ثالث",
+          "الفصل 3"
+        ]
+      },
+      "branchKeywords": {
+        "scientific": [
+          "علمية",
+          "علمي",
+          "scientifiques",
+          "experimentales",
+          "رياضيات",
+          "تقني"
+        ],
+        "literary": [
+          "أدبية",
+          "أدبي",
+          "littéraires",
+          "لغات",
+          "آداب"
+        ]
+      }
+    },
+    {
+      "id": "eddirasa",
+      "name": "Eddirasa",
+      "type": "website",
+      "baseUrl": "https://eddirasa.com",
+      "mirrorBaseUrls": [],
+      "level": "3as",
+      "subjectPath": "/ens-sec/3as/francais/",
+      "language": "ar",
+      "status": "live",
+      "categoriesNote": "الفروض والاختبارات (شعب علمية / شعب أدبية, فصول 1/2/3) ; الدروس والملخصات ; الكتب والمراجع ; ملفات وأدوات ; موارد أخرى.",
+      "categoryCounts": {
+        "frood_t1_sciences": 12,
+        "exam_t1_sciences": 38,
+        "frood_t2_sciences": 7,
+        "exam_t2_sciences": 31,
+        "frood_t3_sciences": 0,
+        "exam_t3_sciences": 30,
+        "frood_t1_lettres": 20,
+        "exam_t1_lettres": 48,
+        "frood_t2_lettres": 19,
+        "exam_t2_lettres": 32,
+        "frood_t3_lettres": 2,
+        "exam_t3_lettres": 39,
+        "curriculum": 2,
+        "lessons_summaries": 69,
+        "summaries": 25,
+        "textbooks": 26,
+        "external_books": 74,
+        "teacher_books": 20,
+        "teacher_notes": 20,
+        "pedagogical_documents": 2,
+        "vocabulary": 36,
+        "grammar": 15,
+        "other_resources": 38
+      },
+      "categoryKeywords": [
+        "فرض",
+        "اختبار",
+        "درس",
+        "ملخص",
+        "كتاب",
+        "مذكرة",
+        "بيداغوج"
+      ]
+    },
+    {
+      "id": "bac_algerie",
+      "name": "Bac-Algerie",
+      "type": "website",
+      "baseUrl": "https://bac-algerie.net",
+      "mirrorBaseUrls": [],
+      "level": "3as",
+      "subjectPath": "/sujets.html",
+      "language": "ar",
+      "status": "live",
+      "categoriesNote": "Archives officielles du BAC 2008-2025 par filière (علوم تجريبية، رياضيات، تقني رياضي، آداب وفلسفة، تسيير واقتصاد، لغات أجنبية) et par année : sujets + تصحيحات.",
+      "categoryCounts": {
+        "bac_subjects_by_branch": 6,
+        "bac_subjects_by_year": 18
+      },
+      "categoryKeywords": [
+        "bac",
+        "بكالوريا",
+        "sujet",
+        "تصحيح",
+        "شعب",
+        "شعبة"
+      ]
+    },
+    {
+      "id": "bacdz",
+      "name": "BacDZ",
+      "type": "website",
+      "baseUrl": "https://bacdz.net",
+      "mirrorBaseUrls": [],
+      "level": "3as",
+      "subjectPath": "/",
+      "language": "ar",
+      "status": "flaky",
+      "categoriesNote": "Accueil charge mais les pages sont historiquement instables ; a traiter en best-effort, jamais fatal.",
+      "categoryKeywords": [
+        "bac",
+        "بكالوريا",
+        "فرنسية",
+        "francais"
+      ]
+    },
+    {
+      "id": "ency_education",
+      "name": "EncyEducation",
+      "type": "website",
+      "baseUrl": "https://www.ency-education.com",
+      "mirrorBaseUrls": [],
+      "level": "3as",
+      "subjectPath": "/3as.html",
+      "language": "fr",
+      "status": "blocked_403_cloudflare",
+      "categoriesNote": "Page 3AS : HTTP 403 (Cloudflare) au 2026-08-16. Journaliser le blocage et continuer ; les autres sites couvrent le corpus.",
+      "categoryKeywords": [
+        "3as",
+        "projet",
+        "sequence",
+        "cours",
+        "serie",
+        "corrige"
+      ]
+    }
+  ]
+}
