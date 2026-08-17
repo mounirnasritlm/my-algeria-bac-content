@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.0.0",
+  "description": "Academic period taxonomy for 3AS educational content",
+  "periods": [
+    {
+      "period_id": "first_term",
+      "names": {
+        "fr": "Premier trimestre",
+        "ar": "الفصل الأول",
+        "en": "First Term"
+      },
+      "aliases": ["T1", "t1", "1er trimestre", "الفصل الأول", "trimestre 1"],
+      "keywords_fr": ["trimestre 1", "1er trimestre", "premier trimestre", "t1", "semestre 1", "s1"],
+      "keywords_ar": ["الفصل الأول", "الفصل 1", "ترimestre 1"]
+    },
+    {
+      "period_id": "second_term",
+      "names": {
+        "fr": "Deuxième trimestre",
+        "ar": "الفصل الثاني",
+        "en": "Second Term"
+      },
+      "aliases": ["T2", "t2", "2ème trimestre", "الفصل الثاني", "trimestre 2"],
+      "keywords_fr": ["trimestre 2", "2ème trimestre", "deuxième trimestre", "t2", "semestre 2", "s2"],
+      "keywords_ar": ["الفصل الثاني", "الفصل 2", "ترimestre 2"]
+    },
+    {
+      "period_id": "third_term",
+      "names": {
+        "fr": "Troisième trimestre",
+        "ar": "الفصل الثالث",
+        "en": "Third Term"
+      },
+      "aliases": ["T3", "t3", "3ème trimestre", "الفصل الثالث", "trimestre 3"],
+      "keywords_fr": ["trimestre 3", "3ème trimestre", "troisième trimestre", "t3", "semestre 3", "s3"],
+      "keywords_ar": ["الفصل الثالث", "الفصل 3", "ترimestre 3"]
+    },
+    {
+      "period_id": "full_year",
+      "names": {
+        "fr": "Année complète",
+        "ar": "السنة الكاملة",
+        "en": "Full Year"
+      },
+      "aliases": ["annuel", "année", "السنة", "سنوي"],
+      "keywords_fr": ["annuel", "année complète", "year", "annually"],
+      "keywords_ar": ["السنة الكاملة", "سنوي", "على مدار السنة"]
+    },
+    {
+      "period_id": "unspecified",
+      "names": {
+        "fr": "Non spécifié",
+        "ar": "غير محدد",
+        "en": "Unspecified"
+      },
+      "aliases": [],
+      "keywords_fr": [],
+      "keywords_ar": [],
+      "note": "Used when the academic period cannot be determined from the source. Do not force a term onto a document if the source does not establish it."
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "branch_id": "langues_etrangeres",
+  "names": {
+    "fr": "Langues Étrangères",
+    "ar": "لغات أجنبية",
+    "en": "Foreign Languages"
+  },
+  "description": "Foreign Languages branch focusing on English, French, and additional foreign languages",
+  "is_core": true,
+  "specializations": []
+}

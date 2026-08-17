@@ -1,0 +1,150 @@
+{
+  "schema_version": "1.0.0",
+  "description": "Document type taxonomy for classifying educational content",
+  "types": [
+    {
+      "type_id": "curriculum_programme",
+      "names": { "fr": "Programme / Curriculum", "ar": "المقرر الدراسي" },
+      "description": "Official curriculum or programme document outlining what must be taught",
+      "category": "curriculum",
+      "is_primary": true
+    },
+    {
+      "type_id": "course_lesson",
+      "names": { "fr": "Cours / Leçon", "ar": "درس" },
+      "description": "Lesson content or course material covering a specific topic",
+      "category": "instruction",
+      "is_primary": true
+    },
+    {
+      "type_id": "summary",
+      "names": { "fr": "Résumé / Fiche", "ar": "ملخص" },
+      "description": "Lesson summary, revision notes, or study sheet",
+      "category": "instruction",
+      "is_primary": true
+    },
+    {
+      "type_id": "textbook",
+      "names": { "fr": "Manuel scolaire", "ar": "كتاب مدرسي" },
+      "description": "Student textbook for a subject",
+      "category": "reference",
+      "is_primary": true
+    },
+    {
+      "type_id": "teacher_book",
+      "names": { "fr": "Guide de l'enseignant", "ar": "كتاب المعلم" },
+      "description": "Teacher's guide or resource book",
+      "category": "reference",
+      "is_primary": true
+    },
+    {
+      "type_id": "exercise",
+      "names": { "fr": "Exercice", "ar": "تمرين" },
+      "description": "Single exercise or problem",
+      "category": "practice",
+      "is_primary": true
+    },
+    {
+      "type_id": "exercise_collection",
+      "names": { "fr": "Recueil d'exercices", "ar": "مجموعة تمارين" },
+      "description": "Collection of exercises grouped together",
+      "category": "practice",
+      "is_primary": true
+    },
+    {
+      "type_id": "homework",
+      "names": { "fr": "Devoir / Travaux", "ar": "واجب" },
+      "description": "Homework assignment or take-home work",
+      "category": "assessment",
+      "is_primary": true
+    },
+    {
+      "type_id": "test",
+      "names": { "fr": "Interrogation / Test", "ar": "اختبار قصير" },
+      "description": "Short test or quiz (interrogation écrite)",
+      "category": "assessment",
+      "is_primary": true
+    },
+    {
+      "type_id": "exam",
+      "names": { "fr": "Examen / DS / DM", "ar": "امتحان" },
+      "description": "Formal examination or exam session (devoir surveillé, devoir mock)",
+      "category": "assessment",
+      "is_primary": true
+    },
+    {
+      "type_id": "mock_bac",
+      "names": { "fr": "BAC blanc", "ar": "بكالوريا بيضاء" },
+      "description": "Mock BAC examination simulating the real exam",
+      "category": "exam",
+      "is_primary": true
+    },
+    {
+      "type_id": "bac",
+      "names": { "fr": "BAC officiel", "ar": "بكالوريا رسمية" },
+      "description": "Official BAC examination from a given year",
+      "category": "exam",
+      "is_primary": true
+    },
+    {
+      "type_id": "correction",
+      "names": { "fr": "Correction", "ar": "تصحيح" },
+      "description": "Correction or answer key (may be for any assessment type)",
+      "category": "correction",
+      "is_primary": false,
+      "note": "A correction is a separate resource when the source is separate. Link via correction_document_id."
+    },
+    {
+      "type_id": "answer_key",
+      "names": { "fr": "Corrigé", "ar": "ملجأ الإجابات" },
+      "description": "Answer key (may be embedded in the same document)",
+      "category": "correction",
+      "is_primary": false
+    },
+    {
+      "type_id": "methodology",
+      "names": { "fr": "Méthodologie", "ar": "منهجية" },
+      "description": "Methodology guide for approaching a subject or exam type",
+      "category": "reference",
+      "is_primary": true
+    },
+    {
+      "type_id": "reference",
+      "names": { "fr": "Document de référence", "ar": "وثيقة مرجعية" },
+      "description": "Reference material not fitting other categories",
+      "category": "reference",
+      "is_primary": true
+    },
+    {
+      "type_id": "pedagogical_document",
+      "names": { "fr": "Document pédagogique", "ar": "وثيقة تربوية" },
+      "description": "General pedagogical resource or teaching aid",
+      "category": "other",
+      "is_primary": true
+    },
+    {
+      "type_id": "other",
+      "names": { "fr": "Autre", "ar": "آخر" },
+      "description": "Document that does not fit any other category",
+      "category": "other",
+      "is_primary": true
+    },
+    {
+      "type_id": "unknown",
+      "names": { "fr": "Inconnu", "ar": "غير معروف" },
+      "description": "Document type cannot be determined from available information",
+      "category": "other",
+      "is_primary": true
+    }
+  ],
+  "categories": {
+    "curriculum": "Official curriculum and programme documents",
+    "instruction": "Teaching and learning materials",
+    "reference": "Reference and textbook materials",
+    "practice": "Practice exercises and problems",
+    "assessment": "Assessment and testing materials",
+    "exam": "Formal examinations including BAC",
+    "correction": "Corrections and answer keys",
+    "other": "Other or uncategorized documents"
+  }
+}

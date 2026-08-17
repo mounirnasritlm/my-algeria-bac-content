@@ -1,0 +1,11 @@
+{
+  "branch_id": "mathematiques",
+  "names": {
+    "fr": "Mathématiques",
+    "ar": "رياضيات",
+    "en": "Mathematics"
+  },
+  "description": "Mathematics branch with advanced mathematical curriculum",
+  "is_core": true,
+  "specializations": []
+}

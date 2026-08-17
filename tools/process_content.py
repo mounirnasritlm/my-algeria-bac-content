@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Full pipeline: extract → dedup → classify → map → build → validate."""
+"""Full pipeline: extract → dedup → classify → map → build → validate → reform."""
 
 import hashlib
 import json
@@ -7,6 +7,7 @@ import os
 import re
 import shutil
 import sys
+from collections import defaultdict
 from pathlib import Path
 
 BASE = Path(".")
@@ -23,6 +24,12 @@ CRAWL_CONFIG = CONFIG_DIR / "crawl_sources.json"
 GITHUB_OWNER = "mounirnasritlm"
 GITHUB_REPO = "my-algeria-bac-content"
 GITHUB_BRANCH = "main"
+
+TAXONOMY_DIR = BASE / "content/taxonomy"
+CANONICAL_DIR = BASE / "content/canonical"
+BRANCHES_DIR = BASE / "content/branches"
+MAPPINGS_DIR = BASE / "content/mappings"
+SOURCES_MANIFESTS_DIR = BASE / "content/sources/manifests"
 
 
 def load_json(path):
@@ -158,13 +165,12 @@ CORRECTION_MAP = {
 }
 
 BRANCH_MAP = [
-    ("experimental_sciences", ["علوم تجريبية", "علوم طبيعية", "sciences expérimentales", "experimentales"]),
-    ("mathematics", ["رياضيات", "mathématiques", "mathematiques", "maths"]),
-    ("technical_mathematics", ["تقني رياضي", "math tech", "technique math"]),
-    ("management_economics", ["تسيير", "اقتصاد", "gestion", "économie", "economie"]),
-    ("literature_philosophy", ["آداب", "فلسفة", "littéraires", "litteraires", "littéraire", "litteraire", "philosophie"]),
-    ("foreign_languages", ["لغات أجنبية", "لغات", "langues étrangères", "langues etrangeres"]),
-    ("arts", ["فنون", "arts"]),
+    ("sciences_experimentales", ["علوم تجريبية", "علوم طبيعية", "sciences expérimentales", "experimentales"]),
+    ("mathematiques", ["رياضيات", "mathématiques", "mathematiques", "maths"]),
+    ("techniques_mathematiques", ["تقني رياضي", "math tech", "technique math"]),
+    ("gestion_economie", ["تسيير", "اقتصاد", "gestion", "économie", "economie"]),
+    ("lettres_philosophie", ["آداب", "فلسفة", "littéraires", "litteraires", "littéraire", "litteraire", "philosophie"]),
+    ("langues_etrangeres", ["لغات أجنبية", "لغات", "langues étrangères", "langues etrangeres"]),
 ]
 
 TRIMESTER_MAP = [
@@ -252,7 +258,7 @@ SEQUENCE_KEYWORDS = {
 def filiere_group(doc):
     branch = doc.get("branch")
     if branch:
-        if branch in ("literature_philosophy", "foreign_languages", "arts"):
+        if branch in ("lettres_philosophie", "langues_etrangeres"):
             return "lettres_langues_etrangeres"
         return "techniques_sciences"
     hint = doc.get("branchHint")
@@ -452,6 +458,29 @@ def build(version="1.0.0"):
     print(f"  documents={len(documents)}, sources={len(sources)}, pdfs={pdf_count}, subjects={len(subjects)}")
 
 
+# ── PUBLISH ──────────────────────────────────────────────────────
+
+PUBLISH_DIR = BASE / "content"
+
+def publish(version="1.0.0"):
+    release_dir = RELEASES_DIR / version
+    app_bundle = release_dir / "app_bundle"
+    if not app_bundle.exists():
+        print("publish: no app_bundle found")
+        return False
+
+    PUBLISH_DIR.mkdir(parents=True, exist_ok=True)
+
+    for fp in app_bundle.iterdir():
+        if fp.is_file():
+            shutil.copy2(fp, PUBLISH_DIR / fp.name)
+
+    manifest = load_json(PUBLISH_DIR / "manifest.json")
+    doc_count = len(load_json(PUBLISH_DIR / "documents.json") or [])
+    print(f"publish: {len(manifest.get('files', []))} files, {doc_count} docs -> {PUBLISH_DIR}")
+    return True
+
+
 # ── VALIDATE ─────────────────────────────────────────────────────
 
 def validate(version="1.0.0"):
@@ -505,10 +534,345 @@ def validate(version="1.0.0"):
     return is_valid
 
 
+# ── REFORM: RAW ↔ EXTRACTION LINKING ─────────────────────────────
+
+def link_raw():
+    """Generate content/sources/manifests/extraction_links.json — maps every PDF to its extracted text/JSON."""
+    downloaded = load_json(DOWNLOADED_JSON) or {}
+    text_avail_raw = load_json(BASE / "content/sources/text_availability.json") or {}
+    text_entries = text_avail_raw.get("entries", [])
+    text_map = {e["sha256"]: e for e in text_entries}
+
+    links = []
+    for sha, value in downloaded.items():
+        pdf_path = f"content/sources/pdf/{sha}.pdf"
+        text_info = text_map.get(sha, {})
+        text_available = text_info.get("textAvailable", False)
+        chars = text_info.get("chars", 0)
+
+        entry = {
+            "sha256": sha,
+            "pdf_path": pdf_path,
+            "pdf_exists": (PDF_DIR / f"{sha}.pdf").exists(),
+            "extracted_text_path": f"content/extracted/{sha}.txt" if text_available else None,
+            "extracted_json_path": None,
+            "extraction_status": "complete" if text_available else "missing",
+            "chars": chars,
+        }
+        links.append(entry)
+
+    save_json(SOURCES_MANIFESTS_DIR / "extraction_links.json", links)
+    ok = sum(1 for l in links if l["extraction_status"] == "complete")
+    print(f"link_raw: {len(links)} PDFs, {ok} extracted, {len(links) - ok} missing")
+
+
+# ── REFORM: SKILLS TAGGING ───────────────────────────────────────
+
+SKILL_KEYWORDS = {
+    "reading_comprehension": ["lecture", "compréhension", "texte", "lire", "document"],
+    "grammar": ["grammaire", "syntaxe", "morphologie", "conjugaison", "nahu"],
+    "argumentation": ["argumentation", "argumenter", "convaincre", "persuader", "débat", "thèse"],
+    "analysis": ["analyse", "analyser", "commenter", "commentaire", "interpréter"],
+    "synthesis": ["synthèse", "synthese", "résumé", "resume", "fiche"],
+    "methodology": ["méthodologie", "methodologie", "méthode", "methodes"],
+    "exam_strategy": [" stratégies", "technique d'examen", "bilan", "révision", "revision"],
+    "recall": ["vocabulaire", "liste", "definitions", "définitions"],
+    "application": ["application", "mise en pratique", "exercice d'application"],
+    "reasoning": ["raisonnement", "logique", "déduction", "induction"],
+    "problem_solving": ["problème", "probleme", "résoudre", "resoudre"],
+    "calculation": ["calcul", "calculer", "opération", "operation"],
+    "interpretation": ["interprétation", "interpretation", "lire", "graphique"],
+    "proof": ["démonstration", "demonstration", "preuve", "prouver"],
+}
+
+
+def tag_skills(doc):
+    """Auto-tag a document with skills based on title/category keywords."""
+    haystack = f"{doc.get('title', '')} {doc.get('category', '')}".lower()
+    skills = []
+    for skill_id, keywords in SKILL_KEYWORDS.items():
+        if any(k in haystack for k in keywords):
+            skills.append(skill_id)
+    return skills[:5]
+
+
+def skills_tag():
+    """Tag classified documents with skills and save to mappings/skill_mapping.json."""
+    classified = load_json(REVIEW_DIR / "classified_documents.json") or []
+    skill_map = []
+    for doc in classified:
+        doc_id = doc.get("sha256", "unknown")[:12]
+        skills = tag_skills(doc)
+        skill_map.append({
+            "document_id": doc_id,
+            "sha256": doc.get("sha256"),
+            "skills": skills,
+            "confidence": 0.6 if skills else 0.0,
+            "evidence": [f"keyword_match:{s}" for s in skills],
+        })
+    save_json(MAPPINGS_DIR / "skill_mapping.json", skill_map)
+    tagged = sum(1 for s in skill_map if s["skills"])
+    print(f"skills_tag: {len(skill_map)} documents, {tagged} tagged with skills")
+
+
+# ── REFORM: RELATIONSHIP LINKING ─────────────────────────────────
+
+def link_relationships():
+    """Detect and link corrections (exam→correction, BAC→correction)."""
+    classified = load_json(REVIEW_DIR / "classified_documents.json") or []
+    docs_by_sha = {d.get("sha256"): d for d in classified if d.get("sha256")}
+
+    corrections = [d for d in classified if "correction" in (d.get("resourceType") or "")]
+    non_corrections = [d for d in classified if "correction" not in (d.get("resourceType") or "")]
+
+    relationships = []
+    linked_count = 0
+
+    for corr in corrections:
+        corr_sha = corr.get("sha256")
+        corr_title = (corr.get("title") or "").lower()
+        corr_id = corr_sha[:12] if corr_sha else "unknown"
+
+        best_match = None
+        best_score = 0
+        for doc in non_corrections:
+            doc_sha = doc.get("sha256")
+            if doc_sha == corr_sha:
+                continue
+            doc_title = (doc.get("title") or "").lower()
+            doc_id = doc_sha[:12] if doc_sha else "unknown"
+
+            score = 0
+            if doc.get("year") == corr.get("year"):
+                score += 2
+            if doc.get("trimester") == corr.get("trimester"):
+                score += 1
+            if doc.get("branch") == corr.get("branch"):
+                score += 1
+            doc_words = set(doc_title.split())
+            corr_words = set(corr_title.split())
+            common = len(doc_words & corr_words)
+            score += min(common, 3)
+
+            if score > best_score and score >= 3:
+                best_score = score
+                best_match = doc
+
+        if best_match:
+            best_sha = best_match.get("sha256")
+            best_id = best_sha[:12] if best_sha else "unknown"
+            relationships.append({
+                "type": "correction_of",
+                "correction_document_id": corr_id,
+                "correction_sha256": corr_sha,
+                "source_document_id": best_id,
+                "source_sha256": best_sha,
+                "confidence": min(best_score / 6.0, 1.0),
+                "evidence": [f"title_similarity", f"year_match", f"branch_match"],
+            })
+            linked_count += 1
+
+    save_json(MAPPINGS_DIR / "document_relationships.json", relationships)
+    print(f"relationships: {len(corrections)} corrections, {linked_count} linked to source documents")
+
+
+# ── REFORM: CANONICAL STRUCTURE BUILDER ──────────────────────────
+
+def build_canonical_structure():
+    """Build canonical subject/branch mapping files from classified documents."""
+    classified = load_json(REVIEW_DIR / "classified_documents.json") or []
+
+    branch_subject_counts = defaultdict(lambda: defaultdict(int))
+    subject_docs = defaultdict(list)
+    branch_docs = defaultdict(list)
+
+    for doc in classified:
+        branch = doc.get("branch")
+        subject = doc.get("subjectId", "french")
+        branch_subject_counts[branch or "unclassified"][subject] += 1
+        subject_docs[subject].append(doc.get("sha256"))
+        if branch:
+            branch_docs[branch].append(doc.get("sha256"))
+
+    save_json(MAPPINGS_DIR / "document_subject.json", {
+        "subject_documents": {k: v for k, v in subject_docs.items()},
+        "total_by_subject": {k: len(v) for k, v in subject_docs.items()},
+    })
+
+    save_json(MAPPINGS_DIR / "document_branch.json", {
+        "branch_documents": {k: v for k, v in branch_docs.items()},
+        "total_by_branch": {k: len(v) for k, v in branch_docs.items()},
+    })
+
+    save_json(MAPPINGS_DIR / "document_curriculum.json", {
+        "note": "Curriculum mapping is embedded in each document's curriculum field",
+        "total_mapped": sum(1 for d in classified if d.get("curriculum", {}).get("projectId")),
+        "total_unmapped": sum(1 for d in classified if not d.get("curriculum", {}).get("projectId")),
+    })
+
+    print(f"canonical: {len(branch_docs)} branches, {len(subject_docs)} subjects represented")
+    for branch, counts in sorted(branch_subject_counts.items()):
+        print(f"  {branch}: {dict(counts)}")
+
+
+# ── REFORM: CONSISTENCY VALIDATION ───────────────────────────────
+
+def validate_reform():
+    """Validate the reformed repository structure — no orphans, no broken refs, no invalid IDs."""
+    errors = []
+    warnings = []
+
+    branches_json = load_json(TAXONOMY_DIR / "branches.json")
+    subjects_json = load_json(TAXONOMY_DIR / "subjects.json")
+    matrix_json = load_json(TAXONOMY_DIR / "subject_branch_matrix.json")
+
+    if not branches_json:
+        errors.append("TAXONOMY_MISSING: branches.json")
+    if not subjects_json:
+        errors.append("TAXONOMY_MISSING: subjects.json")
+    if not matrix_json:
+        errors.append("TAXONOMY_MISSING: subject_branch_matrix.json")
+
+    valid_branch_ids = set()
+    if branches_json:
+        for b in branches_json.get("branches", []):
+            valid_branch_ids.add(b["branch_id"])
+
+    valid_subject_ids = set()
+    if subjects_json:
+        for s in subjects_json.get("subjects", []):
+            valid_subject_ids.add(s["subject_id"])
+
+    if matrix_json:
+        for entry in matrix_json.get("matrix", []):
+            bid = entry.get("branch_id")
+            if bid not in valid_branch_ids:
+                errors.append(f"INVALID_BRANCH_IN_MATRIX: {bid}")
+            for subj in entry.get("subjects", []):
+                sid = subj.get("subject_id")
+                if sid not in valid_subject_ids:
+                    errors.append(f"INVALID_SUBJECT_IN_MATRIX: {sid} (branch: {bid})")
+
+    classified = load_json(REVIEW_DIR / "classified_documents.json") or []
+    for doc in classified:
+        branch = doc.get("branch")
+        if branch and branch not in valid_branch_ids:
+            warnings.append(f"UNKNOWN_BRANCH: {doc.get('sha256', '??')[:8]} has branch '{branch}'")
+
+    pdfs_on_disk = set()
+    if PDF_DIR.exists():
+        pdfs_on_disk = {p.stem for p in PDF_DIR.glob("*.pdf")}
+
+    downloaded = load_json(DOWNLOADED_JSON) or {}
+    for sha in downloaded:
+        if sha not in pdfs_on_disk:
+            warnings.append(f"PDF_NOT_DOWNLOADED: {sha[:16]}...")
+
+    extraction_links = load_json(SOURCES_MANIFESTS_DIR / "extraction_links.json") or []
+    missing_extractions = sum(1 for l in extraction_links if l.get("extraction_status") == "missing")
+    if missing_extractions:
+        warnings.append(f"MISSING_EXTRACTIONS: {missing_extractions} PDFs without extracted text")
+
+    print(f"validate_reform: {len(errors)} errors, {len(warnings)} warnings")
+    for e in errors[:15]:
+        print(f"  ERROR: {e}")
+    for w in warnings[:15]:
+        print(f"  WARN:  {w}")
+
+    is_valid = len(errors) == 0
+    print(f"  valid: {is_valid}")
+    return is_valid
+
+
+# ── REFORM: MIGRATION REPORT ─────────────────────────────────────
+
+def migration_report():
+    """Generate a comprehensive migration report."""
+    classified = load_json(REVIEW_DIR / "classified_documents.json") or []
+    downloaded = load_json(DOWNLOADED_JSON) or {}
+
+    report = {
+        "generated_at": __import__("datetime").datetime.utcnow().isoformat() + "Z",
+        "total_documents": len(classified),
+        "total_downloaded": len(downloaded),
+        "by_resource_type": defaultdict(int),
+        "by_branch": defaultdict(int),
+        "by_year": defaultdict(int),
+        "by_trimester": defaultdict(int),
+        "with_correction": 0,
+        "without_correction": 0,
+        "curriculum_mapped": 0,
+        "curriculum_unmapped": 0,
+        "text_available": 0,
+        "text_unavailable": 0,
+    }
+
+    for doc in classified:
+        report["by_resource_type"][doc.get("resourceType", "unknown")] += 1
+        report["by_branch"][doc.get("branch") or "unclassified"] += 1
+        if doc.get("year"):
+            report["by_year"][doc["year"]] += 1
+        if doc.get("trimester"):
+            report["by_trimester"][doc["trimester"]] += 1
+        if doc.get("correction"):
+            report["with_correction"] += 1
+        else:
+            report["without_correction"] += 1
+        if doc.get("curriculum", {}).get("projectId"):
+            report["curriculum_mapped"] += 1
+        else:
+            report["curriculum_unmapped"] += 1
+
+    text_avail_raw = load_json(BASE / "content/sources/text_availability.json") or {}
+    for e in text_avail_raw.get("entries", []):
+        if e.get("textAvailable"):
+            report["text_available"] += 1
+        else:
+            report["text_unavailable"] += 1
+
+    report["by_resource_type"] = dict(report["by_resource_type"])
+    report["by_branch"] = dict(report["by_branch"])
+    report["by_year"] = dict(report["by_year"])
+    report["by_trimester"] = dict(report["by_trimester"])
+
+    save_json(REVIEW_DIR / "migration_report.json", report)
+    print(f"migration_report: {report['total_documents']} docs")
+    print(f"  by_type: {report['by_resource_type']}")
+    print(f"  by_branch: {report['by_branch']}")
+    print(f"  curriculum: {report['curriculum_mapped']} mapped, {report['curriculum_unmapped']} unmapped")
+    print(f"  text: {report['text_available']} available, {report['text_unavailable']} unavailable")
+
+
+# ── REFORM: MASTER STEP ──────────────────────────────────────────
+
+def reform():
+    """Run all reform steps in sequence."""
+    MAPPINGS_DIR.mkdir(parents=True, exist_ok=True)
+    SOURCES_MANIFESTS_DIR.mkdir(parents=True, exist_ok=True)
+
+    print("\n--- REFORM: Link Raw ↔ Extraction ---")
+    link_raw()
+
+    print("\n--- REFORM: Tag Skills ---")
+    skills_tag()
+
+    print("\n--- REFORM: Link Relationships ---")
+    link_relationships()
+
+    print("\n--- REFORM: Build Canonical Structure ---")
+    build_canonical_structure()
+
+    print("\n--- REFORM: Validate Consistency ---")
+    validate_reform()
+
+    print("\n--- REFORM: Migration Report ---")
+    migration_report()
+
+
 # ── MAIN ─────────────────────────────────────────────────────────
 
 def main():
-    steps = sys.argv[1:] if len(sys.argv) > 1 else ["extract", "dedup", "classify", "map", "build", "validate"]
+    steps = sys.argv[1:] if len(sys.argv) > 1 else ["extract", "dedup", "classify", "map", "build", "publish", "validate", "reform"]
     for step in steps:
         print(f"\n{'='*60}\n  {step.upper()}\n{'='*60}")
         if step == "extract":
@@ -521,9 +885,26 @@ def main():
             map_docs()
         elif step == "build":
             build()
+        elif step == "publish":
+            if not publish():
+                sys.exit(1)
         elif step == "validate":
             if not validate():
                 sys.exit(1)
+        elif step == "reform":
+            reform()
+        elif step == "link_raw":
+            link_raw()
+        elif step == "skills_tag":
+            skills_tag()
+        elif step == "link_relationships":
+            link_relationships()
+        elif step == "build_canonical":
+            build_canonical_structure()
+        elif step == "validate_reform":
+            validate_reform()
+        elif step == "migration_report":
+            migration_report()
         else:
             print(f"unknown step: {step}")
     print("\nAll steps complete.")

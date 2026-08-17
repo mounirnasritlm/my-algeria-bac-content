@@ -1,0 +1,85 @@
+{
+  "subject_id": "french",
+  "canonical_name": "Français",
+  "aliases": ["French", "اللغة الفرنسية", "Langue Française"],
+  "level": "3AS",
+  "language": "fr",
+  "description": "Français 3ème Année Secondaire — toutes filières",
+  "variants": [
+    {
+      "variant_id": "common_or_scientific",
+      "description": "Programme partagé pour les filières scientifiques, mathématiques, techniques et gestion",
+      "filieres": ["techniques_sciences"],
+      "branches": [
+        "sciences_experimentales",
+        "mathematiques",
+        "techniques_mathematiques",
+        "gestion_economie"
+      ],
+      "curriculum_file": "curriculum/common_or_scientific.json",
+      "projects_available": ["p1", "p2", "p4"],
+      "note": "P3 (L'Appel) n'est PAS disponible pour ce variant — Lettres seulement"
+    },
+    {
+      "variant_id": "letters_and_languages",
+      "description": "Programme pour les filières lettres et langues étrangères (inclut P3 L'Appel)",
+      "filieres": ["lettres_langues_etrangeres"],
+      "branches": [
+        "lettres_philosophie",
+        "langues_etrangeres"
+      ],
+      "curriculum_file": "curriculum/letters_and_languages.json",
+      "projects_available": ["p1", "p2", "p3", "p4"],
+      "note": "P3 (L'Appel) est exclusif à ce variant"
+    }
+  ],
+  "curriculum": {
+    "authority": "Ministère de l'Éducation Nationale — Programme officiel de français de la 3ème Année Secondaire",
+    "guide": "Guide du professeur, Français 3ème A.S., toutes filières (Fethi MAHBOUBI, IEF — Office National des Publications Scolaires)",
+    "evidence": [
+      "https://eddirasa.com/wp-content/uploads/2024/12/eddirasa.com-Livre-du-professeur-en-langue-franaise-3AS.pdf",
+      "https://ecoledz.weebly.com/uploads/3/1/0/6/31060631/document_d%E2%80%99accompagnement_du_programme_3as_aout_2011.pdf"
+    ]
+  },
+  "filiere_groups": [
+    {
+      "id": "lettres_langues_etrangeres",
+      "label": "Lettres et Langues Étrangères",
+      "branches": ["lettres_philosophie", "langues_etrangeres"]
+    },
+    {
+      "id": "techniques_sciences",
+      "label": "Techniques, Sciences Expérimentales, Mathématiques, Gestion Économie",
+      "branches": ["sciences_experimentales", "mathematiques", "techniques_mathematiques", "gestion_economie"]
+    }
+  ],
+  "objects_of_study": [
+    {
+      "id": "textes_et_documents_d_histoire",
+      "label": "Textes et documents d'Histoire",
+      "projectId": "p1",
+      "filiere": "all"
+    },
+    {
+      "id": "le_debat_d_idees",
+      "label": "Le débat d'idées",
+      "projectId": "p2",
+      "filiere": "all"
+    },
+    {
+      "id": "l_appel",
+      "label": "L'Appel",
+      "projectId": "p3",
+      "filiere": "lettres_langues_etrangeres"
+    },
+    {
+      "id": "la_nouvelle_fantastique",
+      "label": "La nouvelle fantastique",
+      "projectId": "p4",
+      "filiere": "all"
+    }
+  ],
+  "status": "active",
+  "created_at": "2026-08-17",
+  "last_verified": "2026-08-17"
+}

@@ -45,9 +45,17 @@ jobs:
         if: success() || failure()
         run: python tools/process_content.py build
 
+      - name: Publish to stable path
+        if: success() || failure()
+        run: python tools/process_content.py publish
+
       - name: Validate
         if: success() || failure()
         run: python tools/process_content.py validate
+
+      - name: Reform (link, skills, relationships, canonical, validate, report)
+        if: success() || failure()
+        run: python tools/process_content.py reform
 
       - name: Commit all results
         if: always()

@@ -1,0 +1,104 @@
+{
+  "variant_id": "letters_and_languages",
+  "subject_id": "french",
+  "description": "Programme de Français 3AS — filières Lettres et Philosophie, Langues Étrangères",
+  "filieres": ["lettres_langues_etrangeres"],
+  "branches": [
+    "lettres_philosophie",
+    "langues_etrangeres"
+  ],
+  "projects": [
+    {
+      "projectId": "p1",
+      "objetEtudeId": "textes_et_documents_d_histoire",
+      "title": "Dans le cadre de la commémoration d'une journée historique, réaliser une recherche documentaire puis faire la synthèse de l'information à mettre à la disposition des élèves dans la bibliothèque de l'établissement.",
+      "intention": "Exposer des faits et manifester son esprit critique.",
+      "filiere": "all",
+      "verified": true,
+      "sequences": [
+        {
+          "sequenceId": "p1_s1",
+          "title": "Informer d'un fait d'Histoire.",
+          "verified": true
+        },
+        {
+          "sequenceId": "p1_s2",
+          "title": "Introduire un témoignage dans la relation d'un fait d'Histoire.",
+          "verified": true
+        },
+        {
+          "sequenceId": "p1_s3",
+          "title": "Analyser et commenter un fait d'Histoire.",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "projectId": "p2",
+      "objetEtudeId": "le_debat_d_idees",
+      "title": "Organiser un débat d'idées puis en faire un compte-rendu.",
+      "intention": "Dialoguer pour confronter des points de vue.",
+      "filiere": "all",
+      "verified": true,
+      "sequences": [
+        {
+          "sequenceId": "p2_s1",
+          "title": "S'inscrire dans un débat : convaincre ou persuader.",
+          "verified": true
+        },
+        {
+          "sequenceId": "p2_s2",
+          "title": "Prendre position dans un débat : concéder et réfuter.",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "projectId": "p3",
+      "objetEtudeId": "l_appel",
+      "title": "Dans le cadre d'une journée « portes ouvertes », exposer des panneaux sur lesquels seront reportés des appels afin de mobiliser les apprenants et les visiteurs autour de causes humanitaires.",
+      "intention": "Argumenter pour faire réagir.",
+      "filiere": "lettres_langues_etrangeres",
+      "verified": true,
+      "sequences": [
+        {
+          "sequenceId": "p3_s1",
+          "title": "Comprendre l'enjeu de l'appel et structurer ce dernier.",
+          "verified": true
+        },
+        {
+          "sequenceId": "p3_s2",
+          "title": "Inciter son interlocuteur à agir.",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "projectId": "p4",
+      "objetEtudeId": "la_nouvelle_fantastique",
+      "title": "Rédiger une nouvelle fantastique pour exprimer son imaginaire et provoquer trouble et questionnement chez le lecteur.",
+      "intention": "Exprimer (dans une nouvelle fantastique) son imaginaire et provoquer trouble et questionnement chez le lecteur.",
+      "filiere": "all",
+      "verified": true,
+      "sequences": [
+        {
+          "sequenceId": "p4_s1",
+          "title": "Introduire le fantastique dans un cadre réaliste.",
+          "verified": true
+        },
+        {
+          "sequenceId": "p4_s2",
+          "title": "Exprimer son imaginaire dans une nouvelle fantastique.",
+          "verified": true
+        },
+        {
+          "sequenceId": "p4_s3",
+          "title": "Comprendre l'enjeu de la nouvelle fantastique.",
+          "verified": true
+        }
+      ]
+    }
+  ],
+  "total_sequences": 10,
+  "note": "P3 (L'Appel) is EXCLUSIVE to this variant — only for letters/languages branches"
+}

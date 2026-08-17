@@ -1,0 +1,28 @@
+{
+  "branch_id": "techniques_mathematiques",
+  "names": {
+    "fr": "Techniques Mathématiques",
+    "ar": "تقني رياضي",
+    "en": "Technical Mathematics"
+  },
+  "description": "Technical Mathematics branch with applied mathematical specializations",
+  "is_core": true,
+  "specializations": [
+    {
+      "id": "genie_mecanique",
+      "names": { "fr": "Génie Mécanique", "ar": "هندسة ميكانيكية", "en": "Mechanical Engineering" }
+    },
+    {
+      "id": "genie_electrique",
+      "names": { "fr": "Génie Électrique", "ar": "هندسة كهربائية", "en": "Electrical Engineering" }
+    },
+    {
+      "id": "genie_civil",
+      "names": { "fr": "Génie Civil", "ar": "هندسة مدنية", "en": "Civil Engineering" }
+    },
+    {
+      "id": "genie_procedes",
+      "names": { "fr": "Génie des Procédés", "ar": "هندسة العمليات", "en": "Process Engineering" }
+    }
+  ]
+}

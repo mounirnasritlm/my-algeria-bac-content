@@ -1,0 +1,11 @@
+{
+  "branch_id": "gestion_economie",
+  "names": {
+    "fr": "Gestion et Économie",
+    "ar": "تسيير واقتصاد",
+    "en": "Management and Economics"
+  },
+  "description": "Management and Economics branch focusing on business, economics, and accounting",
+  "is_core": true,
+  "specializations": []
+}

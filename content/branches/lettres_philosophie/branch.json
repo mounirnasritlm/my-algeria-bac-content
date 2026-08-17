@@ -1,0 +1,11 @@
+{
+  "branch_id": "lettres_philosophie",
+  "names": {
+    "fr": "Lettres et Philosophie",
+    "ar": "آداب وفلسفة",
+    "en": "Literature and Philosophy"
+  },
+  "description": "Literature and Philosophy branch focusing on humanities, philosophy, and Arabic literature",
+  "is_core": true,
+  "specializations": []
+}

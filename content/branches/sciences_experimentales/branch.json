@@ -1,0 +1,11 @@
+{
+  "branch_id": "sciences_experimentales",
+  "names": {
+    "fr": "Sciences Expérimentales",
+    "ar": "علوم تجريبية",
+    "en": "Experimental Sciences"
+  },
+  "description": "Experimental Sciences branch focusing on biology, chemistry, and earth sciences alongside physics and mathematics",
+  "is_core": true,
+  "specializations": []
+}

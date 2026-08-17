@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.0.0",
+  "description": "BAC type taxonomy for classifying BAC-related documents",
+  "types": [
+    {
+      "type_id": "bac_blanc",
+      "names": {
+        "fr": "BAC blanc",
+        "ar": "بكالوريا بيضاء",
+        "en": "Mock BAC"
+      },
+      "description": "Mock BAC examination simulating the official exam format, usually administered by schools",
+      "keywords_fr": ["bac blanc", "blanc", "mock bac", "simulacre"],
+      "keywords_ar": ["بكالوريا بيضاء", "امتحان تجريبي"]
+    },
+    {
+      "type_id": "bac_official",
+      "names": {
+        "fr": "BAC officiel",
+        "ar": "بكالوريا رسمية",
+        "en": "Official BAC"
+      },
+      "description": "Official BAC examination from the Ministry of Education for a specific year",
+      "keywords_fr": ["bac officiel", "sujet officiel", "bac official", "session"],
+      "keywords_ar": ["بكالوريا رسمية", "موضوع رسمي"]
+    },
+    {
+      "type_id": "bac_historical",
+      "names": {
+        "fr": "BAC historique",
+        "ar": "بكالوريا قديمة",
+        "en": "Historical BAC"
+      },
+      "description": "Historical BAC examination from a past year (generic term)",
+      "keywords_fr": ["bac", "sujet bac", "annales bac"],
+      "keywords_ar": ["بكالوريا", "مواضيع بكالوريا"]
+    },
+    {
+      "type_id": "bac_proposed",
+      "names": {
+        "fr": "BAC proposé / sujet proposal",
+        "ar": "بكالوريا مقترحة",
+        "en": "Proposed BAC"
+      },
+      "description": "Proposed or practice BAC examination (not official)",
+      "keywords_fr": ["bac proposé", "sujet proposé", "proposition"],
+      "keywords_ar": ["بكالوريا مقترحة", "موضوع مقترح"]
+    },
+    {
+      "type_id": "bac_subject",
+      "names": {
+        "fr": "Sujet de bac",
+        "ar": "موضوع بكالوريا",
+        "en": "BAC Subject"
+      },
+      "description": "A specific BAC subject or prompt (may be part of a larger exam session)",
+      "keywords_fr": ["sujet"],
+      "keywords_ar": ["موضوع"]
+    },
+    {
+      "type_id": "correction",
+      "names": {
+        "fr": "Correction de BAC",
+        "ar": "تصحيح بكالوريا",
+        "en": "BAC Correction"
+      },
+      "description": "Correction or answer key for a BAC examination",
+      "keywords_fr": ["correction", "corrigé", "solution"],
+      "keywords_ar": ["تصحيح", "حل"],
+      "note": "A correction is a separate resource when the source is separate. Link via correction_document_id."
+    }
+  ]
+}

@@ -1,0 +1,162 @@
+{
+  "schema_version": "1.0.0",
+  "description": "Controlled vocabulary of pedagogical skills for mapping educational content",
+  "skills": [
+    {
+      "skill_id": "concept_understanding",
+      "names": {
+        "fr": "Compréhension de concept",
+        "ar": "فهم المفهوم",
+        "en": "Concept Understanding"
+      },
+      "description": "Demonstrating understanding of a concept or idea",
+      "category": "cognitive"
+    },
+    {
+      "skill_id": "recall",
+      "names": {
+        "fr": "Rappel / Mémorisation",
+        "ar": "تذكّر",
+        "en": "Recall"
+      },
+      "description": "Memorizing and recalling factual information",
+      "category": "cognitive"
+    },
+    {
+      "skill_id": "application",
+      "names": {
+        "fr": "Application",
+        "ar": "تطبيق",
+        "en": "Application"
+      },
+      "description": "Applying learned knowledge to new situations or problems",
+      "category": "cognitive"
+    },
+    {
+      "skill_id": "reasoning",
+      "names": {
+        "fr": "Raisonnement",
+        "ar": "استدلال",
+        "en": "Reasoning"
+      },
+      "description": "Logical reasoning and drawing conclusions from evidence",
+      "category": "cognitive"
+    },
+    {
+      "skill_id": "problem_solving",
+      "names": {
+        "fr": "Résolution de problèmes",
+        "ar": "حل المشكلات",
+        "en": "Problem Solving"
+      },
+      "description": "Solving complex problems using multiple approaches",
+      "category": "cognitive"
+    },
+    {
+      "skill_id": "reading_comprehension",
+      "names": {
+        "fr": "Compréhension de texte",
+        "ar": "فهم النص",
+        "en": "Reading Comprehension"
+      },
+      "description": "Understanding and interpreting written texts",
+      "category": "linguistic"
+    },
+    {
+      "skill_id": "grammar",
+      "names": {
+        "fr": "Grammaire",
+        "ar": "نحو وصرف",
+        "en": "Grammar"
+      },
+      "description": "Knowledge and application of grammatical rules",
+      "category": "linguistic"
+    },
+    {
+      "skill_id": "argumentation",
+      "names": {
+        "fr": "Argumentation",
+        "ar": "حوار وإقناع",
+        "en": "Argumentation"
+      },
+      "description": "Building and presenting structured arguments",
+      "category": "linguistic"
+    },
+    {
+      "skill_id": "analysis",
+      "names": {
+        "fr": "Analyse",
+        "ar": "تحليل",
+        "en": "Analysis"
+      },
+      "description": "Analyzing texts, problems, or data into components",
+      "category": "cognitive"
+    },
+    {
+      "skill_id": "synthesis",
+      "names": {
+        "fr": "Synthèse",
+        "ar": "تجميع",
+        "en": "Synthesis"
+      },
+      "description": "Combining information from multiple sources into a coherent whole",
+      "category": "cognitive"
+    },
+    {
+      "skill_id": "calculation",
+      "names": {
+        "fr": "Calcul",
+        "ar": "حساب",
+        "en": "Calculation"
+      },
+      "description": "Performing mathematical calculations accurately",
+      "category": "mathematical"
+    },
+    {
+      "skill_id": "interpretation",
+      "names": {
+        "fr": "Interprétation",
+        "ar": "تفسير",
+        "en": "Interpretation"
+      },
+      "description": "Interpreting data, graphs, texts, or mathematical expressions",
+      "category": "cognitive"
+    },
+    {
+      "skill_id": "proof",
+      "names": {
+        "fr": "Démonstration",
+        "ar": "برهان",
+        "en": "Proof"
+      },
+      "description": "Constructing and presenting mathematical proofs",
+      "category": "mathematical"
+    },
+    {
+      "skill_id": "methodology",
+      "names": {
+        "fr": "Méthodologie",
+        "ar": "منهجية",
+        "en": "Methodology"
+      },
+      "description": "Following and applying methodological approaches to tasks",
+      "category": "meta"
+    },
+    {
+      "skill_id": "exam_strategy",
+      "names": {
+        "fr": "Stratégie d'examen",
+        "ar": "استراتيجية الامتحان",
+        "en": "Exam Strategy"
+      },
+      "description": "Effective exam-taking strategies (time management, question selection, etc.)",
+      "category": "meta"
+    }
+  ],
+  "categories": {
+    "cognitive": "Cognitive and thinking skills",
+    "linguistic": "Language and communication skills",
+    "mathematical": "Mathematical and quantitative skills",
+    "meta": "Metacognitive and strategic skills"
+  }
+}
