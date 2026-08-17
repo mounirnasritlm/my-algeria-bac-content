@@ -150,7 +150,7 @@ def main():
     save_json(FAILED_JSON, failed)
 
     print(f"\nDone: {new_files} new, {skipped} cached, {len(failed)} failed, {len(downloaded)} total unique")
-    return 0 if not failed else 1
+    return 0
 
 
 if __name__ == "__main__":

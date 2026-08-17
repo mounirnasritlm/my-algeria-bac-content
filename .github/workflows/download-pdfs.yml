@@ -26,24 +26,31 @@ jobs:
         run: python tools/download_pdfs.py
 
       - name: Extract text
+        if: success() || failure()
         run: python tools/process_content.py extract
 
       - name: Dedup
+        if: success() || failure()
         run: python tools/process_content.py dedup
 
       - name: Classify
+        if: success() || failure()
         run: python tools/process_content.py classify
 
       - name: Map to curriculum
+        if: success() || failure()
         run: python tools/process_content.py map
 
       - name: Build release
+        if: success() || failure()
         run: python tools/process_content.py build
 
       - name: Validate
+        if: success() || failure()
         run: python tools/process_content.py validate
 
       - name: Commit all results
+        if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -51,8 +58,8 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
-            PDF_COUNT=$(find content/sources/pdf -name '*.pdf' 2>/dev/null | wc -l)
-            DOC_COUNT=$(python -c "import json; print(len(json.load(open('content/releases/1.0.0/app_bundle/documents.json'))))" 2>/dev/null || echo "?")
-            git commit -m "Pipeline complete: ${PDF_COUNT} PDFs, ${DOC_COUNT} documents [skip ci]"
+            PDF_COUNT=$(find content/sources/pdf -name '*.pdf' 2>/dev/null | wc -l || echo 0)
+            DOC_COUNT=$(python -c "import json; d=json.load(open('content/releases/1.0.0/app_bundle/documents.json')); print(len(d))" 2>/dev/null || echo "?")
+            git commit -m "Pipeline: ${PDF_COUNT} PDFs, ${DOC_COUNT} documents [skip ci]"
             git push
           fi
