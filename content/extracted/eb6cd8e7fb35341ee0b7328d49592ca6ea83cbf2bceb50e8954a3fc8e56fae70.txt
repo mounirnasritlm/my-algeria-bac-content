@@ -1,0 +1,298 @@
+
+ 
+ 
+ 
+BAEL
+ 
+I
+       
+ 
+II
+  
+ 
+III
+    
+TIC
+ 
+ I  
+BAELII
+  
+    
+ 
+ISimulationOrganigrammesII
+ 
+²cm/kg20x610=EcmL047,0cmL0kg11520²/27,891cmkgcmL019,0²38,314cm²/1593cmkgx10-5Rad538Rad01,0²/1911cmkg
+ 
+HA=0 VA=7,5t VB=7,5t 
+ 
+t
+  
+AD 10,61 
+ 
+AC 7,50 
+ 
+DC 3,54 
+ 
+DE 11,04 
+ 
+CE 3,54 
+ 
+CB 7,50 
+ 
+EB 10,61 
+ 
+HA=4,5t HB=4,5t  VB=4t
+ 
+P 
+  
+6m 6m P P D E C VA HA VB 
+B 1m
+ 
+1,5m 1,5m P P A D E C 1m
+ 
+VB HB HA 
+  t  AD 3,02  DE 3,02  AC 1,78  
+AB 0,98 
+ 
+BC 5,42 
+ 
+DC 2,00 
+ 
+CE 3,64 
+  
+t
+  
+AC 2,60 
+ 
+AD 3,00 
+ 
+DC 0,00 
+ 
+CB 2,60 
+ 
+DB 3,00 
+ 
+DE 0,00 
+ 
+EB 2,00 
+ 
+S0,21cm² 
+HA=0 VA=3,5KN VB=3,5KN 
+  HB=0 VB=6KN VA=6KN T=VB-q.x M=VB.x-q2
+²x 
+Mmax=4,5KN.m 
+²/75,6maxcmN²/20cmNHB=0 VB=0 VA=20KN 10x
+T=0 M=+10 KN.m 20x 
+T=0 M=10KN.m 32x
+ 
+T=20(x-2) M=-202
+²2x +10 
+HB 
+   
+x 
+6 
+x 
+0 
+0 
+M
+ 
+6 
+T 
+VB VA 
+q 
+3m 
+4,5 
+x x 
+KN.m 1KN.m VA VB HB 1m 1m 1m 20 
+-
+ 
++
+ 
++
+ 
++
+ 
+M 
+T 
+0 
+0 
+10 
+ ²/150cmN²33,13NcmHA=0 ; VA=40KN ; VB=40KNT=VA-q.x M=2
+².. xqxVA
+  
+Mmax=40KN.m, x=2m                    ²/6000cmN                  ²/33,133cmN
+20KN/m VB VA HA 
+ 
+-
+ 
++
+ 
++
+ 
+x 
+x 
+40 
+40 
+0 
+T 
+0 
+40 M 
+4m 
+ ƒcj= 40 MPa  ƒc28MPa43.13c15 
+ ƒtjMPa1ƒt la loi de Hookee< ƒs  ss  = E . es        es   =  ss   /  E es  
+  
+ƒcj  0.06+0.6=j  ƒt = 2.10 MPa j  ƒt ƒtj    = 1.92 MPa E L S}90v?.ƒtj;ƒe.1/2{min=ss    =  min ( 117.5 MPa ; 124.70 MPa  )  ssMPa117.5ss
+  
+1E.L.U.RAs
+ 
+    
+ 
+         = MPa
+ 
+  
+   
+Au  =  NU / ƒsu  =  12.07  cm2   
+  
+   
+ 
+cm2 4  HA  20 A   E.L.S
+ 
+As . ƒe  =  B . ƒt28As  = 4.72 cm²
+ 
+>  As    Au        
+        ƒc15  0.06+0.6=ƒt15 j 1.40 + 0.95 j ƒc15  = ƒc28     
+ 
+ƒcj  0.06+0.6=ƒtj 
+  
+ HA 
+ 
+HA 6
+   
+ ƒe
+ 
+?s  
+ 061E.L.U.RAs
+                                        MPa  
+  
+   
+Au  =  NU / ƒsu  =  12.06  cm2             
+  
+E.L.S
+ 
+E L S}90v?.ƒtj;ƒe.1/2{min=ss sst  =  158  MPaAser  = Nser  / sst   =  18.99 cm2   Au  < Aser A  =  4  HA   25 =   19.63 cm2                     
+  
+N
+  
+A= 6  HA 12  = 6.78 cm2 
+ 
+  A . ƒe  =  B . ƒt28
+ 
+B = 30×15 = 450 cm2                                  B ×ƒt 28  =  450 ×2.10 = 945  KN                        A  ×ƒe    =  6.78  ×400  =  2712  KN                  s10  =  348 MPa     
+ 
+N = 348 × 678 = 235944 N = 236 KN >200 KN 236 KN >200 KN  
+ƒe ?s  
+  
+HA 
+ 
+HA 
+  
+  MPa  N = 240 × 278 = 162720 N = 163 KN163 KN > 140 KNI =            =  50 × (35)3 /12   = 178646 cm4        10.10  cm            
+  
+=         24.75                             9
+ 
+As  =  3HA 16  + 3  HA 20 =  15.45 cm2  >  15.40 cm2 
+ 
+As  = 3  HA 16 = 6.03 cm2  = 1.15 × 250000 / 400 = 719 mm2  = 7.19 cm2 3  HA 16 + 3  HA 20 = 15.45 cm2   > 15.40  cm 2 
+ 
+3HA20 = 9.42 cm2  >  7.19 cm2
+ b a3
+ 
+12               ? min ?  =                B 
+ 
+   178646 =      
+  
+         Lƒ   =            ?
+   
+  250         =   10.10    
+P P 3HA 16 3HA 20 6.00 
+70
+ 
+ 
+ 0x
+0y
+20x
+0y
+ 
+30x
+0y
+40x
+0y
+mxAB48,412
+myAB 55,222
+grgyxtggABAB50,6885,1  0ABx
+0ABy
+GBA=GAB+200GBA=268,50gr 03mxAB00,30
+myAB 00,50
+tg g=0,6 g=34,40gr 
+                  0ABx
+                       0ABy 
+                                                                                         GBC=GAB+
+ 
+-200 
+GBC=-45,6gr=400-45,6=354,4gr 
+    G=100gr 
+    G=400gr 
+    G=300gr 
+    G=200gr 
+    G=g=68,50gr 
+    GAB=g=34,40gr 
+ S= )]sin(.)sin(.)sin(.)sin()sin(.[2
+1 . OEOAOAOEODOEOEODOCODODOCOBOCOCOBOAOBOB GGGGGGGGGGOA
+ 
+S=5409,145m² S=)()()(2
+1 ABcCABBCA yyxyyxyyx
+ 
+S=10954,208m² ABCDES= )()()()()(2
+1 ADEECDDBCCABBEA yyxyyxyyxyyxyyx
+ 
+S=868,9515m² ²²gxmOA10,38
+ 
+mOB51,49
+ 
+mOC52,71
+ 
+mOD42,69
+ 
+mOE45,52
+ 
+3GOA=89,82gr GOB=66,26gr GOC=82,48gr GOD=99,55gr GOE=119,06gr S= )]sin(.)sin(.)sin(.)sin()sin(.[2
+1 . OEOAOAOEODOEOEODOCODODOCOBOCOCOBOAOBOBOA GGGGGGGGGG
+ 
+S=869,0564m² 0,1049m²
+ d1S)(.ZABHtghd
+d=0,00m
+ 
+2Smm,53=m,00350=d )()(AHBHZZ
+ 
+S2 C
+ 
+ABABVtgDC. 
+C=3,5mm 
+VA?VB00083,0D
+CVtgVDtgC
+ 
+grV 053,0
+ 
+1212 VVVVVV
+ 
+50053,02V 
+grV 053,502
+ 
+V2
+ 
+ 
+   14.48 16.04    11.96 
+ 
+
+ 
+ 

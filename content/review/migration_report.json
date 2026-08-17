@@ -1,0 +1,56 @@
+{
+  "generated_at": "2026-08-17T22:32:22.069444Z",
+  "total_documents": 562,
+  "total_downloaded": 562,
+  "by_resource_type": {
+    "bacSubject": 41,
+    "lesson": 69,
+    "textbook": 59,
+    "curriculum": 3,
+    "unknown": 245,
+    "homework_correction": 56,
+    "bac_correction": 72,
+    "externalDocument": 9,
+    "summary": 8
+  },
+  "by_branch": {
+    "unclassified": 458,
+    "lettres_philosophie": 35,
+    "langues_etrangeres": 47,
+    "gestion_economie": 4,
+    "mathematiques": 14,
+    "techniques_mathematiques": 4
+  },
+  "by_year": {
+    "2010": 7,
+    "2011": 8,
+    "2014": 10,
+    "2015": 29,
+    "2013": 5,
+    "2016": 29,
+    "2018": 39,
+    "2017": 35,
+    "2020": 58,
+    "2021": 44,
+    "2019": 52,
+    "2022": 19,
+    "2026": 1,
+    "2023": 13,
+    "2024": 23,
+    "2025": 18,
+    "2012": 4,
+    "2008": 7,
+    "2009": 7
+  },
+  "by_trimester": {
+    "1": 118,
+    "2": 88,
+    "3": 99
+  },
+  "with_correction": 372,
+  "without_correction": 190,
+  "curriculum_mapped": 0,
+  "curriculum_unmapped": 562,
+  "text_available": 438,
+  "text_unavailable": 124
+}

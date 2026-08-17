@@ -1,0 +1,30 @@
+[
+  {
+    "id": "function_definition",
+    "name": "Function definition",
+    "summary": "A relation that maps each input to exactly one output.",
+    "lessonId": "math_function_definition",
+    "sourceId": "demo_source"
+  },
+  {
+    "id": "function_domain",
+    "name": "Function domain",
+    "summary": "The set of inputs for which a function is defined.",
+    "lessonId": "math_function_domain",
+    "sourceId": "demo_source"
+  },
+  {
+    "id": "derivative_definition",
+    "name": "Derivative definition",
+    "summary": "The instantaneous rate of change of a function.",
+    "lessonId": "math_derivative_definition",
+    "sourceId": "demo_source"
+  },
+  {
+    "id": "motion_basics",
+    "name": "Motion basics",
+    "summary": "Position, velocity and acceleration.",
+    "lessonId": "physics_motion_basics",
+    "sourceId": "demo_source"
+  }
+]

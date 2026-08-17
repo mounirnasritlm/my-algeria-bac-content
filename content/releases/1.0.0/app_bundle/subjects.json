@@ -1,0 +1,43 @@
+[
+  {
+    "id": "mathematics",
+    "names": {
+      "ar": "الرياضيات",
+      "fr": "Mathématiques",
+      "en": "Mathematics"
+    },
+    "icon": "∑",
+    "chapterIds": [
+      "math_functions",
+      "math_derivatives"
+    ],
+    "lessonIds": [],
+    "order": 1
+  },
+  {
+    "id": "physics",
+    "names": {
+      "ar": "العلوم الفيزيائية",
+      "fr": "Physique",
+      "en": "Physics"
+    },
+    "icon": "⚡",
+    "chapterIds": [
+      "physics_motion"
+    ],
+    "lessonIds": [],
+    "order": 2
+  },
+  {
+    "id": "french",
+    "names": {
+      "ar": "اللغة الفرنسية",
+      "fr": "Français",
+      "en": "French"
+    },
+    "icon": "🗣️",
+    "chapterIds": [],
+    "lessonIds": [],
+    "order": 3
+  }
+]

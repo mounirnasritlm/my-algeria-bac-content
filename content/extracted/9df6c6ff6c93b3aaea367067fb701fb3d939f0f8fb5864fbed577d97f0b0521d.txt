@@ -1,0 +1,283 @@
+       
+                                
+                           
+   CAO/DAO  
+         
+.  
+.
+CAO/DAO              
+                        
+             
+H7m6 H8f7 
+ 
+        
+               
+
+        
+      
+           
+     
+k6H7   
+O
+
+   x            
+
+                                     
+  
+ 
+                 
+                       P = C .          C = P /  = 30P/pN = 30.500/750.3,14
+ 
+                                                     P = 6,36 mN                          W = C .           W = 6,36. 1000.2.p 
+ 
+                                                       W = 40000 j    t = W/P t = 40000/500                                                         t = 80s
+ 
+  
+  
+                      C = Ft . R          Ft = C/R = CR  - CRES                                       CR = PR/R         PR  = PM .µ       R = M .r                                                       Ft = 841,8N CRCRESµr PR                   PM
+       
+      
+    
+                                                
+ 
+                               
+   
+                                       r = N2/N1 = D1/D2 = 120/180 = 2/3    r = 2/3                                                         N2/N1 = 2/3     N1= 90t/mn                                                            N2 = 60 t/mn                                                r1 =  N2/N1 = D1/D2 = 2                                             r2 = N4/N3 = D3/D4 = 3 r = r1. r2  = 2.3 = 6N2 = N3N1 = N4/r = 1800/6                                                                                                    mn/t300 = 1 N  
+             
+   
+30mm       m = 1,5         r = 3/10    a =a = (d1 + d2)/2           r = d1/d2                                       d1 = m.Z1                        d2 = m.Z2                                   mm60 = 2d             mm18 = 1d40= 2 Z =1Z
+2        /1 = mN/rN = r d/md= r mn/t1500 = mmm      N40 = md                  mn/t750 = rN      mm80=   rdmn  /t1500 = mkw      N,51= P 30/N.p= ?    ? .C= P ?               /P= C mN,559= C 2/mT d= C md/C2= T                           N,7477= T Rp.k/          T,34 2 =m 
+ 
+,022m =,52= m a             cos/T= F N,19508= F 
+                      
+ 2   
+°  mm40=  C tours
+        
+        
+     
+
++ P + P7 = 0 + F0 / 90 / 8E? Fext  = 0 + ME P + ME P7 = 0 + ME F0 / 90 / 8E EM?ME Fext  = 0                                         N4400 = 8/ 0 E           N7600 = 9/ 0 F       =  0  +    B5 / 3           +  D6 / 3A2 / 3? Fext  = 0 + MA D6 / 3  = 0 + MA B5 / 32 / 3A AM?ME Fext  = 0                     N ,754035 = 3/ 2 A                  N,158006 = 3 / 5 B
+                   
+ 2 E 
+      N        sp      
+ 
+ S = p d2/4 
+ 
+sp  = 100N/mm2  N =N                         S                   d = 8mm    
+ 
+ d = 7,98mm   E = 2.105N/mm2  L = 2m?L = (N.L)/(E.S)mm,990= L ?E = 2.105N/mm2 1mL =N = 4000N?L = (N.L)/(E.S) 2a= S 
+ 
+mm20a =          
+   
+2a= S  
+ 
+S/N = s2mm/N10= s  L =1ms 10N/mm24000NN ?L 0,05mm 
+Re = 650N/mm2 ?= 20mms = 5 smax = F/2S  RP = Re/sN8264F = N8000= F L0 = 70mm  E = 2.105N/mm2   L?Ls = F/2S = E.                     mm,0040= L ?
+ 
+N = 12.104N Re = 300N/mm2s = 102mm4000S =  E = 2.105N/mm2L0 = 2m  )S.E)/(L.N= (L ?mm,30= L ? p/S = (D2- d2 )D = d + 12 mmmm,31218= D mm,31206= d  a1 F1 = F2 = 16320NRe = 400N/mm2E = 2.105N/mm2 s = 5e = 3mm   FeR2mm204S =  SsS = a12- a22a1 – a2 = 2e = 6mm   mm20= 1 amm14= 2 a )S.E)/(L.N= (L ?mm,060= L ?
+    
+ 1 GReg = 500N/mm220mm40N.ms = 5 Reg = TC = T.RT = 4000N
+ 
+S2s    2?R= S mm,04 5 =3dmm6 = 3d P = 60kwN = 1500t/mn30mm30-8-7 P = C.?C = T.R = ?.N/30T = 25477N S/T= l.a= S 2mm/N,15106= d1= 8mm     Rpg = 30N/mm2T = 2500N pg R=F =moy 
+ 
+2?R= S mm,287d = S2mm,287mm =8 d = 30mm T = 26000NRpg = 18N/mm2 pgT   =  R=  T     = l.d.?= S mm,3315l =         
+ 1 Mt Mt = 60m.NRpg = 50N/mm2G = 8.104N/mm2L = 40cmRpg = MtI0 = p. d4 = d0Imm,318d =  
+ 
+gpL = R.?.G = mm/rd4-.10,680 = ? L.? = °,551 = aL =400mm
+ 
+60m.NMt 
+ 
+1,55°d = 20mm= 3°G = 8.104N/mm2L = 30cm0I?.G = tML.? =   
+ 
+4 d.p = 0Im.N,52213= t M
+  
+t        M =max2/d = 2mm/N 136 =max  I0L =300mm 
+213,5m.NMt 
+ 
+3°Rpg = MtI0 = p. d4 = dP = C.?? = p.N/30I0m.N127= t Mmm,225d=     mm30= d 
+  
+F = 3000CD = 400mm =  400N/mm2  CD .F = tMN.mm5.1012 = tM t = MpgR4d. p = 0Id = mm,624d= 0I
+ 
+mm25= d  = 18° 0I?.G = tML.? = 
+ 
+4 d.p = 0I4mm39100 = 0I mm/dr4-.10,833= mm820= L        
+ TMt 
+F1= 400N+ P = 0 + F1A? Fext  = 0F1 + MA B = 0 + MA F1 A AM?MA Fext  = 0
+ 
+       N,66186= B       N,33213= A B A AC0 = x = 1,4x N,333 21-= A -= T B,61C,41A CB1,4 = x = 3- 213,33N N,66186 = + 1F+A -= T y x AC0 = x = 1,4+186,66N x. A = f M0= x 0 = fM ,41= x mN,66298 = fMT
+ 
+CB1,4 = x = 3Mf = A . x – F1.( x – 1,4),4         1= x mN,66829 = fMx 3            = x                           0 = fMmN,66298+fM
+ 
+F1= 350NF2 = 380N+ F2 = 0 + B + F1A? Fext  = 0
+ 
++ MA F2 + MA B = 0 + MA F1 A AM?MA Fext  = 0
+  
+              F2B  AF1  N,33333= A N,66396= B xC   A                       B     D 160,8-380Ny CA0 = x = 0,8                                  N350 = +1F= + T AB0,8 = x = 6,8N,6616 = +  A- 1F  += T N ,6616+ BD6,8 = x = 7,8N 380-=  B - A -1F=  + T 350NT CA0 = x = 0,8-380N x . 1 F-= f M0= x 0 = fMN 280- ,80= x mN 280- = fMAB0,8 = x = 6,8Mf = - F1 . x + A.(x-0,8)
+ 
+,80= x mN 280- = fM,8 6= x      
+ 
+mN 380- = fMBD6,8 = x = 7,8Mf = - F1 . x + A.(x-0,8) – B.(x-6,8)
+ 
+,8 6=      x 
+ 
+mN 380- = fM,8 7=                  x 
+ 
+ 0 =fMMf
+   
+F1= 500NF2 = 1000N F3= 1500NF4 = 2000N
+100mmF4F3 AB0 = x = 2N500 = +1F= + T  2    F         F1                                                                                                                                                      BC2 = x = 4N1500 = +2F+ 1F= + T                         EA      B     C      D                             2      2      2      2                                                              CD4 = x = 6N0030 = +3F + 2F+ 1F= + T xN500
+  
+DE6 = x = 8N5000 = +4F + 3F + 2F+ 1F= + T N1500                                            AB0 = x = 2x . 1 F-= f M0= x 0 = fMN3000
+ 
+ 2=x mN0 100- = fMBC2 = x = 45000N Mf = - F1 . x - F2.(x-2)
+ 
+T 2= x mN0 100- = fMmN23000-       4= x      
+ 
+mN0 400- = fMCD4 = x = 6Mf = - F1. x - F2.(x-2) – F3.(x-4)
+  
+4= x            
+ 
+mN0 400- = fM
+ 
+6=        x   
+ 
+mN 10000-  =fMDE6 = x = 8-10000mN Mf = - F1. x - F1.(x-2)- F3.(x-4) –F4(x-6)
+  
+6= x              
+ 
+mN 380-=  fMx
+ 
+8=      x     
+ 
+mN 23000-  =fM-4000mN -1000mN
+ 
+Mf 6/3a/fM= v  /0I/fM= axi ms2mm/N138=maxi s
+F1= 150NF2 = 150N F3 = 300NA             F3            B                                                              AB              F2  F1  N300= A N300= B   x E                                  B                D      C       A   y CA0 = x = 1-150N                 N501 = +1F= + T AD1 = x = 4x N 150- =    A– 1F=  + T 
+ 
+DB4 = x = 7150N            N015+  =  3F+  A -1F= + T DB7 = x = 8T N0 15-=  B - 3F +  A-1F=  + T -150mN          CA0 = x = 1x . 1 F-= f M0= x 0 = fM1    = x mN0 15- = fMmN300+ AB1 = x = 4Mf = - F1 . x + A.(x-1)
+ 
+1   = x mN05 1- = fMfM
+ 
+4   = x      
+ 
+mN030 =+ fMBD4 = x = 7Mf = - F1 . x + A.(x-4) – F3.(x-4)
+  
+4= x      
+ 
+mN0 30- = fM7 =                  x 
+ 
+mN 150-  =fM DE7 = x = 87 = x 
+ 
+mN 150- = fM8 = x 0 = fM3d,20/f M= maxi smm,2529= d 
+    
+I S O
+    
+                 
+  ISO   
+TSAFVPMBV NVf VCff = 0,26mm/tr    Vc = 40m/mnD.p/CV= N mn/tr,91979= N f.N = fVmn/mm,77254 = fVNVf VCfzfz = 0,25mm/d    Vc = 80m/mnD.p/CV= N mn/tr,94636= N z.zf.N = fVmn/mm,7477 = fV
+      
+    
+0,1mm 10,1mm   173,75mm7,38mm     
+                 
+       
+
+                
+
+  
+CFAO
+     
+ISOGM 
+  
+         
+CFAO
+             
+      
+N10 G90 N20 G96 S1000 N30 T1 D1 M03 M08 N40 G00 X-22 Y0 Z-5 N50 G01 X90 Y0 Z-5 F0.5 N60 G01 X90 Y80 Z-5 F0.5 N70 G01 X-24 Y80 Z-5 F0.5 N80 G00 X-100 Y-60 Z-5  F0.5 N90 M09 N100 M30 
+N80 G00 X- 100 Y- 60 Z- 5 F0.5  
+N10 G92 X0 Y0 Z1O0 S800    N20 T1 D1  N30 M03 M08 1N40 G00 X30 Y  Z20 2N50 G81 X30 Y Z5 F200 3N60 G80 X30 Y  Z25 4N70 G01X50  Y  Z25 5N80 G81 X50  Y  Z-3  F200 6N90 G80 X50  Y  Z25 7N100 G01 X70 Y  Z25 8N110 G81 X70 Y  Z5  F200 9N120 G80 X70 Y  Z25 10N130 M09 11N140 G00  X0 Y0 Z1O0 N150 M02 N10 G96 S2000 N20 G92 S1500 N30 T1 D1 1N40 G00 X60 Z2 M04 2N50 G01 X60 Z-2 F0.5 3N60 G01 X-2 Z-2 F0.5 4N70 G01 X60 Z-2 F0.5 5N80 G00 X60 Z-3   6N90 G01 X-2 Z-3 F0.5  7N100 G00 X100 Z50   N110 M09 
+ CFAO CFAO 
+CAD 2D CAD 3DCAM 2DCAM 3DCFAOCFAO
+           
+       
+               
+  
+OUI
+ 
+NON
+  
+ET
+  
+OU
+ 
+GRAFCET
+  
+GRAFCET 
+   
+GRAFCE
+  
+                  
+     
+
+                     
+
+   
+A1A2A3 ……..An = A1bn-¹+A2bn-²+A3bn-³+……….Anbn-nn =7   b = 10(3180469)10 = 3.107-1+1.107-2+8.107-3+0.107-4+4.107-5+6.107-6+9.107-7               0.109+1.106+2.104+3.100+4.108+5.101+6.103 = 10)3180469( (0011001)2 =0.27-1+0.27-2+1.27-3+1.27-4+0.27-5+0.27-6+1.27-7               0.21+1.20+2.20+3.21+4.21+5.20+6.20 = 2)0011001(
+ 
+8.85+6.84+3.83+0.82+1.81+2.80                             8)863012(2)1011000111(                                  10)51( (10010001)2(10010001)10
+ 
+ (25112403)6(25112403)10   
+        S1 = a + b + c + a.b.c + a.b + b.c + a.b + b.c1 = 1S               S2 = a.b + a.b.c + a.c + b.c + a.b.c                S3 = a.c.d + a.b.c + c.d.b + a.b.c + a.b.c.d      
+ 
+            c+ b = 2 S                 d.c.b+ c .a+ c .b+ d .c = 3S                           S4 = ( a + b.c ).d
+            ab 00101101000111cd
+ 
+10
+ab 1111c 1100
+  
+S4
+ 
+bcd
+a
+   
+  1V1V2V1+ = a.b.c.d + a.b.c.d  V2+ = a.b.c.d + a.b.c.d  V1- = a.b.c.d + a.b.c.d + a.b.c.d + a.b.c.d  V2- =  a.b.c.d + a.b.c.d + a.b.c.d + a.b.c.d  2                                                          
+      
+     V1+ = c + a.b.d                                    V2+ = a.d.c                                
+      
+     V1- = d + a.c.                                  V2- = a + c.d                                3V1V2
+           a bcd V1+V1- V2+ V2- 1001 01 01 0001 01 10 0101 01 1 0 00000 01 1010 10 0 1 100001 01           ab V1+
+00101101
+000111cd
+ 
+10
+          ab V2+
+00101101
+000111cd
+ 
+10
+          ab V1-
+00101101
+00010111111cd
+ 
+100
+          ab V2-
+00101101
+0011010111cd
+ 
+1010
+       
+a
+ 
+c
+ 
+bd
+   
+V2+=V1+=V1-=V2-=
+      
+ V1                                                            V2                           
+a cb d
+      
+  GRAFCET 
+
+GRAFCET
+
+                                                         

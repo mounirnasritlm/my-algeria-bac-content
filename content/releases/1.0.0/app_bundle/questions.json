@@ -1,0 +1,110 @@
+[
+  {
+    "id": "q_math_001",
+    "subjectId": "mathematics",
+    "lessonId": "math_function_definition",
+    "conceptId": "function_definition",
+    "type": "multipleChoice",
+    "prompt": "Demo exercise 1",
+    "options": [
+      "a",
+      "b",
+      "c",
+      "d"
+    ],
+    "correctIndex": 0,
+    "explanation": "10 + 10 = 20.",
+    "difficulty": 1,
+    "sourceId": "demo_source"
+  },
+  {
+    "id": "q_math_002",
+    "subjectId": "mathematics",
+    "lessonId": "math_function_definition",
+    "conceptId": "function_definition",
+    "type": "multipleChoice",
+    "prompt": "Demo exercise 2",
+    "options": [
+      "a",
+      "b",
+      "c",
+      "d"
+    ],
+    "correctIndex": 1,
+    "explanation": "The domain is the set of valid inputs.",
+    "difficulty": 1,
+    "sourceId": "demo_source"
+  },
+  {
+    "id": "q_math_003",
+    "subjectId": "mathematics",
+    "lessonId": "math_function_definition",
+    "conceptId": "function_definition",
+    "type": "multipleChoice",
+    "prompt": "Demo exercise 3",
+    "options": [
+      "a",
+      "b",
+      "c",
+      "d"
+    ],
+    "correctIndex": 2,
+    "explanation": "A function maps each input to exactly one output.",
+    "difficulty": 1,
+    "sourceId": "demo_source"
+  },
+  {
+    "id": "q_math_004",
+    "subjectId": "mathematics",
+    "lessonId": "math_derivative_definition",
+    "conceptId": "derivative_definition",
+    "type": "multipleChoice",
+    "prompt": "Demo exercise 4",
+    "options": [
+      "a",
+      "b",
+      "c",
+      "d"
+    ],
+    "correctIndex": 3,
+    "explanation": "The derivative measures instantaneous rate of change.",
+    "difficulty": 1,
+    "sourceId": "demo_source"
+  },
+  {
+    "id": "q_math_005",
+    "subjectId": "mathematics",
+    "lessonId": "math_function_domain",
+    "conceptId": "function_domain",
+    "type": "multipleChoice",
+    "prompt": "Demo exercise 5",
+    "options": [
+      "a",
+      "b",
+      "c",
+      "d"
+    ],
+    "correctIndex": 0,
+    "explanation": "For f(x) = 1/x, x = 0 is excluded from the domain.",
+    "difficulty": 1,
+    "sourceId": "demo_source"
+  },
+  {
+    "id": "q_physics_001",
+    "subjectId": "physics",
+    "lessonId": "physics_motion_basics",
+    "conceptId": "motion_basics",
+    "type": "multipleChoice",
+    "prompt": "Motion exercise 1",
+    "options": [
+      "m/s",
+      "m",
+      "s",
+      "kg"
+    ],
+    "correctIndex": 0,
+    "explanation": "Speed is measured in m/s.",
+    "difficulty": 1,
+    "sourceId": "demo_source"
+  }
+]

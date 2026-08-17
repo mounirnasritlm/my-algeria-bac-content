@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "1.0.0",
+  "contentVersion": "1.0.0",
+  "updatedAt": "2026-08-17T22:32:21.230202Z",
+  "files": [
+    {
+      "path": "subjects.json",
+      "sha256": "cd647c38399869bbc451988c55d780a4d65605f769b2d887e598479c0582ef21"
+    },
+    {
+      "path": "chapters.json",
+      "sha256": "19d5dd38f3d4a4958af06c7339c8ea41eea4fb977c97e93def466693a77c3246"
+    },
+    {
+      "path": "lessons.json",
+      "sha256": "36e716b7f9e01bc1734cb1c2054be1faed51f5f5559bce9fd2fa81439648ddeb"
+    },
+    {
+      "path": "concepts.json",
+      "sha256": "8898c4ff72ffd07e28067cc1c3dfadcb49ee92573d96f1717feab23c5827ce34"
+    },
+    {
+      "path": "questions.json",
+      "sha256": "8f17023ebde99bc4f61020322ba104b1c5095f84f1770606b47789d4c6c1ca2a"
+    },
+    {
+      "path": "exams.json",
+      "sha256": "f784efb8630c1fbdfdd98a9bfcdbe8dfc0090f356f1048012f1bf08e48cbedec"
+    },
+    {
+      "path": "solutions.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "sources.json",
+      "sha256": "8c57065f44282f6bbdf476f8bf1e3e5cc86bedc8bb5d4fd681f688a38e9ed6d6"
+    },
+    {
+      "path": "teachers.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "videos.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "worksheets.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "documents.json",
+      "sha256": "5533e489a5348d90a7110ced961c169713c01bac97fe9a8ae9bdffb4ea56a583"
+    }
+  ]
+}
