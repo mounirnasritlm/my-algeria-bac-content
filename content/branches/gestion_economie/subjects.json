@@ -1,53 +1,6 @@
 {
-  "branch_id": "gestion_economie",
-  "subjects": [
-    {
-      "subject_id": "french",
-      "variant_id": "common_or_scientific",
-      "curriculum_file": "canonical/subjects/french/curriculum/common_or_scientific.json",
-      "resource_policy": "variant"
-    },
-    {
-      "subject_id": "arabic",
-      "variant_id": "scientific",
-      "curriculum_file": null,
-      "resource_policy": "variant"
-    },
-    {
-      "subject_id": "english",
-      "variant_id": "common",
-      "curriculum_file": null,
-      "resource_policy": "shared"
-    },
-    {
-      "subject_id": "islamic_education",
-      "variant_id": "common",
-      "curriculum_file": null,
-      "resource_policy": "shared"
-    },
-    {
-      "subject_id": "philosophy",
-      "variant_id": "management",
-      "curriculum_file": null,
-      "resource_policy": "variant"
-    },
-    {
-      "subject_id": "mathematics",
-      "variant_id": "management",
-      "curriculum_file": null,
-      "resource_policy": "variant"
-    },
-    {
-      "subject_id": "economics_management",
-      "variant_id": "gestion_economie",
-      "curriculum_file": null,
-      "resource_policy": "branch_specific"
-    },
-    {
-      "subject_id": "history_geography",
-      "variant_id": "common",
-      "curriculum_file": null,
-      "resource_policy": "shared"
-    }
+  "branch_id":"gestion_economie",
+  "subjects":[
+    ["french","common_or_scientific","variant"],["arabic","scientific_technical_management","variant"],["english","common","shared"],["islamic_education","common","shared"],["philosophy","management","variant"],["mathematics","management","variant"],["economics","gestion_economie","branch_specific"],["law","gestion_economie","branch_specific"],["accounting","gestion_economie","branch_specific"],["history_geography","common","shared"]
   ]
 }

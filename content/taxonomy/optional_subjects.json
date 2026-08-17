@@ -1,0 +1,8 @@
+{
+  "schema_version":"1.0.0",
+  "subjects":[
+    {"subject_id":"physical_education","name":"Éducation physique et sportive","scope":"optional_additional","rule":"Do not force into every core branch subject bundle unless a source/resource exists."},
+    {"subject_id":"tamazight","name":"Tamazight","scope":"optional_additional","rule":"Availability depends on school/region; keep provenance and availability metadata."
+    }
+  ]
+}
