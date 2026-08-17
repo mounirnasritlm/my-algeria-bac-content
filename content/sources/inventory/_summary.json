@@ -4,5 +4,5 @@
     "errors": 4,
     "status": "flaky"
   },
-  "reform_ready": true
+  "reform_version": "1.0.0"
 }
