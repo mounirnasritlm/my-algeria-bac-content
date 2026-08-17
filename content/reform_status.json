@@ -1,9 +1,36 @@
 {
-  "schema_version":"1.0.0",
-  "phase":"semantic_architecture_established",
+  "schema_version":"2.0.0",
+  "phase":"physical_3as_resource_tree_established",
   "base_ingestion_commit":"21036a8fde768aef335e25dcee5ea8ded4eb12c7",
+  "semantic_architecture_commit":"7eb7063abc49c56ea352879f83d6b6b04c300d3d",
+  "physical_tree_commit":"74d0e465943079c18f7356dcdc1fe7db5a21e6ae",
   "ingestion_snapshot":{"documents_reported_by_pipeline_commit":562,"pdfs_reported_by_pipeline_commit":562},
-  "implemented":["six 3AS core branches","canonical subject taxonomy","branch-subject matrix","branch-specific curriculum variants","shared-subject deduplication model","economics/law/accounting split","technology specializations","PDF↔extraction contract","AI Teacher retrieval model","review/quarantine rules"],
-  "next_content_phase":["validate every existing document against actual content","complete source PDF↔TXT/JSON links","populate curriculum variants from authoritative programme files","manually validate French classifications","decompose books into chapters/lessons/concepts/exercises","map exercises/assessments/BAC questions to skills","build validated release bundles"],
+  "implemented":[
+    "six 3AS core branches",
+    "canonical subject taxonomy",
+    "branch-subject matrix",
+    "branch-specific curriculum variants",
+    "shared-subject deduplication model",
+    "economics/law/accounting split",
+    "technology specializations",
+    "PDF↔extraction contract",
+    "AI Teacher retrieval model",
+    "review/quarantine rules",
+    "physical 3AS branch-to-subject navigation folders",
+    "physical subject resource folders for curriculum, courses, summaries, books, teacher books, exercises, devoirs, tests, exams, BAC, source metadata and curriculum mapping",
+    "term folders for first/second/third term",
+    "correction folders where corrections may exist",
+    "French curriculum variant folders"
+  ],
+  "next_content_phase":[
+    "validate every existing document against actual content",
+    "complete source PDF↔TXT/JSON links",
+    "move or reference approved resources into the physical subject folders",
+    "populate curriculum variants from authoritative programme files",
+    "manually validate French classifications",
+    "decompose books into chapters/lessons/concepts/exercises",
+    "map exercises/assessments/BAC questions to skills",
+    "build validated release bundles"
+  ],
   "uncertainty_policy":"Unresolved documents remain pending_review or quarantine; no correction or metadata is fabricated."
 }
