@@ -337,6 +337,10 @@ def build(version="1.0.0"):
     crawl_root = load_json(CRAWL_CONFIG)
     curriculum = load_json(CURRICULUM_FILE)
 
+    text_avail_raw = load_json(BASE / "content/sources/text_availability.json") or {}
+    text_entries = text_avail_raw.get("entries", [])
+    text_map = {e["sha256"]: e for e in text_entries}
+
     sources = [{
         "id": "demo_source", "type": "demo", "name": "MY Algeria BAC demo content",
         "author": "MY Algeria BAC", "url": None, "publication": None, "year": "2026", "verified": False,
@@ -360,6 +364,12 @@ def build(version="1.0.0"):
         pdf_url = f"{raw_base}/{sha}.pdf" if has_file else primary.get("pdfUrl")
         mirrors = [m.get("pdfUrl") for m in md.get("mirrors", []) if m.get("pdfUrl")]
         doc_id = f"d_{sha[:8]}" if sha else f"d_{primary.get('site', 'unknown')}_{counter}"
+
+        text_info = text_map.get(sha, {}) if sha else {}
+        ta = text_info.get("textAvailable", False)
+        chars = text_info.get("chars", 0)
+        page_count = max(1, chars // 2000) if chars > 0 else 0
+
         documents.append({
             "id": doc_id,
             "title": md.get("title"),
@@ -375,8 +385,8 @@ def build(version="1.0.0"):
             "retrievedAt": (downloaded.get(sha) or {}).get("downloadedAt") if sha else None,
             "sha256": sha if has_file else None,
             "fileSize": md.get("fileSize"),
-            "pageCount": 0,
-            "textAvailable": False,
+            "pageCount": page_count,
+            "textAvailable": ta,
             "pdfUrl": pdf_url,
             "curriculum": md.get("curriculum"),
             "relatedDocumentIds": [],
