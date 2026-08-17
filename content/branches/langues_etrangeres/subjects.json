@@ -1,6 +1,6 @@
 {
   "branch_id":"langues_etrangeres",
   "subjects":[
-    ["french","letters_and_languages","variant"],["arabic","literary_languages","variant"],["english","common","shared"],["islamic_education","common","shared"],["philosophy","languages","variant"],["mathematics","literary_languages","variant"],["spanish","langues_etrangeres","branch_specific"],["german","langues_etrangeres","branch_specific"],["italian","langues_etrangeres","branch_specific"],["history_geography","common","shared"]
+    {"subject_id":"french","variant_id":"letters_and_languages","resource_policy":"variant"},{"subject_id":"arabic","variant_id":"literary_languages","resource_policy":"variant"},{"subject_id":"english","variant_id":"common","resource_policy":"shared"},{"subject_id":"islamic_education","variant_id":"common","resource_policy":"shared"},{"subject_id":"philosophy","variant_id":"languages","resource_policy":"variant"},{"subject_id":"mathematics","variant_id":"literary_languages","resource_policy":"variant"},{"subject_id":"spanish","variant_id":"langues_etrangeres","resource_policy":"branch_specific"},{"subject_id":"german","variant_id":"langues_etrangeres","resource_policy":"branch_specific"},{"subject_id":"italian","variant_id":"langues_etrangeres","resource_policy":"branch_specific"},{"subject_id":"history_geography","variant_id":"common","resource_policy":"shared"}
   ]
 }

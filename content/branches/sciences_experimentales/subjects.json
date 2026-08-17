@@ -1,6 +1,6 @@
 {
   "branch_id":"sciences_experimentales",
   "subjects":[
-    ["french","common_or_scientific","variant"],["arabic","scientific_technical_management","variant"],["english","common","shared"],["islamic_education","common","shared"],["philosophy","scientific_math_technical","variant"],["mathematics","scientific_math_technical","variant"],["physics","scientific_math_technical","variant"],["natural_sciences","sciences_experimentales","branch_specific"],["history_geography","common","shared"]
+    {"subject_id":"french","variant_id":"common_or_scientific","resource_policy":"variant"},{"subject_id":"arabic","variant_id":"scientific_technical_management","resource_policy":"variant"},{"subject_id":"english","variant_id":"common","resource_policy":"shared"},{"subject_id":"islamic_education","variant_id":"common","resource_policy":"shared"},{"subject_id":"philosophy","variant_id":"scientific_math_technical","resource_policy":"variant"},{"subject_id":"mathematics","variant_id":"scientific_math_technical","resource_policy":"variant"},{"subject_id":"physics","variant_id":"scientific_math_technical","resource_policy":"variant"},{"subject_id":"natural_sciences","variant_id":"sciences_experimentales","resource_policy":"branch_specific"},{"subject_id":"history_geography","variant_id":"common","resource_policy":"shared"}
   ]
 }
