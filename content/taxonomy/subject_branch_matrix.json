@@ -1,89 +1,23 @@
 {
-  "schema_version": "1.0.0",
-  "description": "Branch × Subject matrix — which subjects are taught in which branches, with curriculum variant mappings",
-  "note": "This is the initial matrix based on standard 3AS programme knowledge. Must be validated against actual repository evidence and curriculum documents.",
-  "matrix": [
-    {
-      "branch_id": "sciences_experimentales",
-      "subjects": [
-        { "subject_id": "french", "variant_id": "common_or_scientific", "resource_policy": "variant" },
-        { "subject_id": "arabic", "variant_id": "scientific", "resource_policy": "variant" },
-        { "subject_id": "english", "variant_id": "common", "resource_policy": "shared" },
-        { "subject_id": "islamic_education", "variant_id": "common", "resource_policy": "shared" },
-        { "subject_id": "philosophy", "variant_id": "scientific", "resource_policy": "variant" },
-        { "subject_id": "mathematics", "variant_id": "scientific", "resource_policy": "variant" },
-        { "subject_id": "physics", "variant_id": "common", "resource_policy": "variant" },
-        { "subject_id": "natural_sciences", "variant_id": "sciences_experimentales", "resource_policy": "branch_specific" },
-        { "subject_id": "history_geography", "variant_id": "common", "resource_policy": "shared" }
-      ]
-    },
-    {
-      "branch_id": "mathematiques",
-      "subjects": [
-        { "subject_id": "french", "variant_id": "common_or_scientific", "resource_policy": "variant" },
-        { "subject_id": "arabic", "variant_id": "scientific", "resource_policy": "variant" },
-        { "subject_id": "english", "variant_id": "common", "resource_policy": "shared" },
-        { "subject_id": "islamic_education", "variant_id": "common", "resource_policy": "shared" },
-        { "subject_id": "philosophy", "variant_id": "scientific", "resource_policy": "variant" },
-        { "subject_id": "mathematics", "variant_id": "scientific", "resource_policy": "variant" },
-        { "subject_id": "physics", "variant_id": "common", "resource_policy": "variant" },
-        { "subject_id": "natural_sciences", "variant_id": "mathematiques", "resource_policy": "branch_specific" },
-        { "subject_id": "history_geography", "variant_id": "common", "resource_policy": "shared" }
-      ]
-    },
-    {
-      "branch_id": "techniques_mathematiques",
-      "subjects": [
-        { "subject_id": "french", "variant_id": "common_or_scientific", "resource_policy": "variant" },
-        { "subject_id": "arabic", "variant_id": "scientific", "resource_policy": "variant" },
-        { "subject_id": "english", "variant_id": "common", "resource_policy": "shared" },
-        { "subject_id": "islamic_education", "variant_id": "common", "resource_policy": "shared" },
-        { "subject_id": "philosophy", "variant_id": "scientific", "resource_policy": "variant" },
-        { "subject_id": "mathematics", "variant_id": "scientific", "resource_policy": "variant" },
-        { "subject_id": "physics", "variant_id": "common", "resource_policy": "variant" },
-        { "subject_id": "technology", "variant_id": "techniques_mathematiques", "resource_policy": "branch_specific", "specialization_dependent": true },
-        { "subject_id": "history_geography", "variant_id": "common", "resource_policy": "shared" }
-      ]
-    },
-    {
-      "branch_id": "gestion_economie",
-      "subjects": [
-        { "subject_id": "french", "variant_id": "common_or_scientific", "resource_policy": "variant" },
-        { "subject_id": "arabic", "variant_id": "scientific", "resource_policy": "variant" },
-        { "subject_id": "english", "variant_id": "common", "resource_policy": "shared" },
-        { "subject_id": "islamic_education", "variant_id": "common", "resource_policy": "shared" },
-        { "subject_id": "philosophy", "variant_id": "management", "resource_policy": "variant" },
-        { "subject_id": "mathematics", "variant_id": "management", "resource_policy": "variant" },
-        { "subject_id": "economics_management", "variant_id": "gestion_economie", "resource_policy": "branch_specific" },
-        { "subject_id": "history_geography", "variant_id": "common", "resource_policy": "shared" }
-      ]
-    },
-    {
-      "branch_id": "lettres_philosophie",
-      "subjects": [
-        { "subject_id": "french", "variant_id": "letters_and_languages", "resource_policy": "variant" },
-        { "subject_id": "arabic", "variant_id": "literary", "resource_policy": "variant" },
-        { "subject_id": "english", "variant_id": "common", "resource_policy": "shared" },
-        { "subject_id": "islamic_education", "variant_id": "common", "resource_policy": "shared" },
-        { "subject_id": "philosophy", "variant_id": "literary", "resource_policy": "variant" },
-        { "subject_id": "mathematics", "variant_id": "literary", "resource_policy": "variant" },
-        { "subject_id": "history_geography", "variant_id": "common", "resource_policy": "shared" }
-      ]
-    },
-    {
-      "branch_id": "langues_etrangeres",
-      "subjects": [
-        { "subject_id": "french", "variant_id": "letters_and_languages", "resource_policy": "variant" },
-        { "subject_id": "arabic", "variant_id": "literary", "resource_policy": "variant" },
-        { "subject_id": "english", "variant_id": "common", "resource_policy": "shared" },
-        { "subject_id": "islamic_education", "variant_id": "common", "resource_policy": "shared" },
-        { "subject_id": "philosophy", "variant_id": "languages", "resource_policy": "variant" },
-        { "subject_id": "mathematics", "variant_id": "literary", "resource_policy": "variant" },
-        { "subject_id": "spanish", "variant_id": "langues_etrangeres", "resource_policy": "branch_specific" },
-        { "subject_id": "german", "variant_id": "langues_etrangeres", "resource_policy": "branch_specific" },
-        { "subject_id": "italian", "variant_id": "langues_etrangeres", "resource_policy": "branch_specific" },
-        { "subject_id": "history_geography", "variant_id": "common", "resource_policy": "shared" }
-      ]
-    }
-  ]
+  "schema_version":"2.0.0",
+  "principle":"One canonical subject; branch-specific differences are variants, not duplicated subjects.",
+  "branches": {
+    "sciences_experimentales":["french","arabic","english","islamic_education","philosophy","mathematics","physics","natural_sciences","history_geography"],
+    "mathematiques":["french","arabic","english","islamic_education","philosophy","mathematics","physics","natural_sciences","history_geography"],
+    "techniques_mathematiques":["french","arabic","english","islamic_education","philosophy","mathematics","physics","technology","history_geography"],
+    "gestion_economie":["french","arabic","english","islamic_education","philosophy","mathematics","economics","law","accounting","history_geography"],
+    "lettres_philosophie":["french","arabic","english","islamic_education","philosophy","mathematics","history_geography"],
+    "langues_etrangeres":["french","arabic","english","islamic_education","philosophy","mathematics","spanish","german","italian","history_geography"]
+  },
+  "variant_notes": {
+    "french":"Two validated curriculum families in the current repository: scientific/technical/management and letters/languages.",
+    "arabic":"Keep one canonical subject with branch-family variants.",
+    "english":"Official 3AS programme is shared across all six branches.",
+    "philosophy":"Branch-family variants required; never merge scientific/technical/management/literary/languages resources blindly.",
+    "mathematics":"Scientific/math/technical, management, and literary/languages variants are distinct curricula.",
+    "physics":"Restricted to scientific/math/technical branches.",
+    "natural_sciences":"Keep separate variants for Sciences Expérimentales and Mathematics where repository evidence confirms them.",
+    "technology":"Techniques Mathématiques only and specialization-dependent.",
+    "third_foreign_languages":"Spanish/German/Italian belong to Langues Étrangères as alternatives/options; do not duplicate them into other branches."
+  }
 }

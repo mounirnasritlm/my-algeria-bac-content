@@ -1,0 +1,9 @@
+{
+  "schema_version":"1.0.0",
+  "phase":"semantic_architecture_established",
+  "base_ingestion_commit":"21036a8fde768aef335e25dcee5ea8ded4eb12c7",
+  "ingestion_snapshot":{"documents_reported_by_pipeline_commit":562,"pdfs_reported_by_pipeline_commit":562},
+  "implemented":["six 3AS core branches","canonical subject taxonomy","branch-subject matrix","branch-specific curriculum variants","shared-subject deduplication model","economics/law/accounting split","technology specializations","PDF↔extraction contract","AI Teacher retrieval model","review/quarantine rules"],
+  "next_content_phase":["validate every existing document against actual content","complete source PDF↔TXT/JSON links","populate curriculum variants from authoritative programme files","manually validate French classifications","decompose books into chapters/lessons/concepts/exercises","map exercises/assessments/BAC questions to skills","build validated release bundles"],
+  "uncertainty_policy":"Unresolved documents remain pending_review or quarantine; no correction or metadata is fabricated."
+}

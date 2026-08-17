@@ -1,87 +1,116 @@
 # my-algeria-bac-content
 
-MY Algeria BAC - versioned educational content releases (JSON bundle + PDFs) consumed by the Flutter app. Designed to support a future AI Algerian BAC Teacher (RAG engine).
+Content/knowledge repository for the MY Algeria BAC Flutter app and its future AI Algerian BAC Teacher.
 
----
+## Current architecture
 
-## Quick Start
+The repository is now **content-first** and uses a canonical semantic model:
 
-```bash
-# Download PDFs from crawled inventory
-python tools/download_pdfs.py
-
-# Run full pipeline (extract → dedup → classify → map → build → publish → validate → reform)
-python tools/process_content.py
-
-# Run specific steps
-python tools/process_content.py extract dedup classify map build publish validate reform
+```text
+3AS
+└── Branch
+    └── Canonical Subject
+        └── Curriculum Variant
+            └── Project / Unit
+                └── Sequence
+                    └── Lesson
+                        └── Concept / Skill
+                            └── Resource
 ```
 
----
+Resources are organized conceptually as:
 
-## Repository Architecture
-
+```text
+Curriculum / Programme
+Courses / Lessons
+Summaries
+Textbooks
+Teacher Books
+Exercises + optional Corrections
+Term 1 Devoirs / Tests + optional Corrections
+Term 2 Devoirs / Tests + optional Corrections
+Term 3 Devoirs / Tests + optional Corrections
+Exams + optional Corrections
+BAC Blanc / Mock BAC + optional Corrections
+Official / Historical BAC + optional Corrections
+Source metadata
+PDF ↔ Extracted TXT/JSON linkage
+Curriculum mapping
+Skill mapping
+Semantic relationships
 ```
-content/
-  taxonomy/                    # Branch, subject, document type, skill definitions
-  canonical/subjects/<id>/     # Canonical subject definitions + curriculum
-  branches/<id>/               # Branch definitions + subject mappings
-  sources/
-    inventory/                 # Crawl inventory JSONs (911 entries from 3 sites)
-    pdf/                       # SHA-256-named PDF files (after download)
-    manifests/                 # Raw ↔ extraction linkage
-  extracted/                   # Extracted plain text from PDFs
-  review/                      # Classified/mapped documents + migration reports
-  mappings/                    # Document ↔ subject/branch/curriculum/skill mappings
-  releases/<version>/          # Versioned release bundles
+
+## Six core 3AS branches
+
+- Sciences Expérimentales
+- Mathématiques
+- Techniques Mathématiques
+- Gestion et Économie
+- Lettres et Philosophie
+- Langues Étrangères
+
+Techniques Mathématiques keeps four specializations under the same branch: Génie Mécanique, Génie Électrique, Génie Civil, Génie des Procédés.
+
+## Canonical-subject rule
+
+A subject that is shared by several branches is **stored once**. Branches reference the canonical subject and select the correct curriculum variant.
+
+Examples:
+
+- French: one canonical subject with branch-family variants.
+- Arabic: one canonical subject with scientific/technical/management and literary/languages variants.
+- English: one shared 3AS subject.
+- Islamic Education: one shared 3AS subject unless authoritative evidence establishes a variant.
+- Mathematics: separate curriculum variants for scientific/math/technical, management, and literary/languages.
+- Philosophy: branch-family variants.
+- Physics: scientific/math/technical only.
+- Technology: Techniques Mathématiques only and specialization-dependent.
+- Spanish/German/Italian: Langues Étrangères only.
+- Economics, Law, and Accounting are separate canonical subjects for Gestion et Économie; the old `economics_management` grouping is deprecated.
+
+See:
+- `content/taxonomy/branches.json`
+- `content/taxonomy/subjects.json`
+- `content/taxonomy/subject_branch_matrix.json`
+- `content/canonical/resource_layout.json`
+- `reform.md`
+
+## Raw source preservation
+
+Raw PDFs and their existing extracted data are preserved. The semantic layer does not require renaming or deleting raw assets.
+
+Every raw PDF must resolve to extracted text and/or extracted JSON through a deterministic manifest. Missing or ambiguous extraction links are explicitly marked instead of guessed.
+
+## Corrections
+
+Corrections are optional. A missing correction is valid and must never be fabricated.
+
+## Review workflow
+
+```text
+raw
+→ classified
+→ pending_review
+→ approved
+→ canonical
+→ released
 ```
 
----
+Wrong, corrupt, duplicated-with-uncertain-relationship, or low-confidence documents remain preserved and are flagged for review/quarantine.
 
-## Taxonomy
+French content receives an explicit language/subject validation pass because the historical crawl contained non-French files under French-labelled categories.
 
-- **6 standard 3AS branches**: Sciences Expérimentales, Mathématiques, Techniques Mathématiques, Gestion et Économie, Lettres et Philosophie, Langues Étrangères
-- **14 canonical subjects**: French, Arabic, English, Islamic Education, Philosophy, Mathematics, Physics, Natural Sciences, History & Geography, Technology, Economics & Management, Spanish, German, Italian
-- **19 document types**: curriculum_programme through unknown
-- **15 pedagogical skills**: concept_understanding through exam_strategy
-- **5 academic periods**: first_term, second_term, third_term, full_year, unspecified
-- **6 BAC types**: bac_blanc, bac_official, bac_historical, bac_proposed, bac_subject, correction
+## AI Teacher readiness
 
----
+The semantic model is designed so the future RAG/Teacher engine can retrieve by:
 
-## Pipeline Steps
+`branch + subject + academic_year + curriculum_variant + lesson + skill + resource_type + term + year + correction_availability`
 
-| Step | Description |
-|---|---|
-| `extract` | Extract text from PDFs using pypdf |
-| `dedup` | Deduplicate by SHA-256, identify mirrors |
-| `classify` | Classify documents by type, branch, trimester, year |
-| `map` | Map documents to curriculum (projects/sequences) |
-| `build` | Build release bundle (12 app-compatible JSON collections) |
-| `publish` | Copy release to stable content/ root path |
-| `validate` | Validate manifest SHA-256 checksums |
-| `reform` | Run all reform steps (link_raw, skills, relationships, canonical, validate, report) |
+The teacher should prefer:
 
----
+- course + summary + teacher/textbook reference for teaching;
+- exercises for practice;
+- tests/exams for assessment;
+- historical/mock/official BAC + corrections + curriculum/skills for BAC preparation.
 
-## Content Sources
-
-| Source | Items | Status |
-|---|---|---|
-| dzexams | 300 | Crawled |
-| eddirasa | 597 | Crawled |
-| bac_algerie | 14 | Crawled |
-| bacdz | 0 | Flaky |
-| ency_education | 0 | Blocked (Cloudflare) |
-
----
-
-## AI Teacher Readiness
-
-The repository structure supports future RAG queries by:
-- Branch + Subject + Curriculum + Lesson + Skill + Type + Term + Year + Correction availability
-- Document relationships (exercise → correction, exam → correction)
-- Skills tagging with confidence scores
-- Source provenance preserved for every document
-
-See `reform.md` for the complete reform specification.
+Student-specific mastery and personal data belong in the app/backend, not this repository.

@@ -1,0 +1,8 @@
+{
+  "schema_version":"2.0.0",
+  "hierarchy":["level","branch","subject","academic_year","curriculum_variant","project_or_unit","sequence","lesson","concept_or_skill","resource"],
+  "resource_types":["curriculum_programme","course_lesson","summary","textbook","teacher_book","exercise","exercise_correction","homework","homework_correction","test","test_correction","exam","exam_correction","bac_blanc","bac_blanc_correction","bac_official","bac_official_correction"],
+  "required_metadata":["document_id","source","subject_id","level","document_type","verification_status","confidence"],
+  "optional_metadata":["branch_id","curriculum_variant_id","academic_year","academic_period","skills","difficulty","correction_document_id"],
+  "teacher_intents":["explain","hint","diagnose","practice","correct","remediate","revise","plan","bac_prepare","bac_simulate","pattern_analysis"]
+}

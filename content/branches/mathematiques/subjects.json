@@ -1,59 +1,6 @@
 {
-  "branch_id": "mathematiques",
-  "subjects": [
-    {
-      "subject_id": "french",
-      "variant_id": "common_or_scientific",
-      "curriculum_file": "canonical/subjects/french/curriculum/common_or_scientific.json",
-      "resource_policy": "variant"
-    },
-    {
-      "subject_id": "arabic",
-      "variant_id": "scientific",
-      "curriculum_file": null,
-      "resource_policy": "variant"
-    },
-    {
-      "subject_id": "english",
-      "variant_id": "common",
-      "curriculum_file": null,
-      "resource_policy": "shared"
-    },
-    {
-      "subject_id": "islamic_education",
-      "variant_id": "common",
-      "curriculum_file": null,
-      "resource_policy": "shared"
-    },
-    {
-      "subject_id": "philosophy",
-      "variant_id": "scientific",
-      "curriculum_file": null,
-      "resource_policy": "variant"
-    },
-    {
-      "subject_id": "mathematics",
-      "variant_id": "scientific",
-      "curriculum_file": null,
-      "resource_policy": "variant"
-    },
-    {
-      "subject_id": "physics",
-      "variant_id": "common",
-      "curriculum_file": null,
-      "resource_policy": "variant"
-    },
-    {
-      "subject_id": "natural_sciences",
-      "variant_id": "mathematiques",
-      "curriculum_file": null,
-      "resource_policy": "branch_specific"
-    },
-    {
-      "subject_id": "history_geography",
-      "variant_id": "common",
-      "curriculum_file": null,
-      "resource_policy": "shared"
-    }
+  "branch_id":"mathematiques",
+  "subjects":[
+    {"subject_id":"french","variant_id":"common_or_scientific","resource_policy":"variant"},{"subject_id":"arabic","variant_id":"scientific_technical_management","resource_policy":"variant"},{"subject_id":"english","variant_id":"common","resource_policy":"shared"},{"subject_id":"islamic_education","variant_id":"common","resource_policy":"shared"},{"subject_id":"philosophy","variant_id":"scientific_math_technical","resource_policy":"variant"},{"subject_id":"mathematics","variant_id":"scientific_math_technical","resource_policy":"variant"},{"subject_id":"physics","variant_id":"scientific_math_technical","resource_policy":"variant"},{"subject_id":"natural_sciences","variant_id":"mathematiques","resource_policy":"branch_specific"},{"subject_id":"history_geography","variant_id":"common","resource_policy":"shared"}
   ]
 }

@@ -1,0 +1,9 @@
+{
+  "schema_version":"1.0.0",
+  "rule":"Every raw PDF must resolve deterministically to extracted text and/or extracted JSON, or be explicitly marked missing/unresolved.",
+  "identity":"Prefer SHA-256 of the raw PDF as stable binary identity.",
+  "fields":["document_id","sha256","pdf_path","extracted_text_path","extracted_json_path","extraction_status","link_confidence","link_evidence"],
+  "statuses":["complete","text_only","json_only","missing","ambiguous","invalid"],
+  "correction_rule":"Corrections are optional and must never be fabricated.",
+  "provenance_rule":"Keep original source URL, download URL, original title, retrieval timestamp, source site, and SHA-256."
+}
