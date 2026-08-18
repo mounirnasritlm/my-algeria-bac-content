@@ -7,6 +7,8 @@ on:
       - '.github/workflows/import-french-scientific.yml'
   pull_request:
     types: [closed]
+  issues:
+    types: [opened]
   workflow_dispatch:
 
 permissions:
@@ -20,7 +22,7 @@ jobs:
   import:
     if: github.event_name != 'pull_request' || github.event.pull_request.merged == true
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     steps:
       - name: Checkout
         uses: actions/checkout@v4
