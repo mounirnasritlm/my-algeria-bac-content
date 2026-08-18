@@ -16,39 +16,17 @@ PDF_ROOT = OUT / "resources"
 MANIFEST = OUT / "source_metadata" / "french_scientific_sources.json"
 
 SEEDS = [
-    {
-        "site": "dzexams",
-        "suffix": "dzexams",
-        "url": "https://www.dzexams.com/ar/3as/francais/as_d1",
-        "default_term": "first_term",
-        "root_domain": "dzexams.com",
-    },
-    {
-        "site": "eddirasa",
-        "suffix": "eddirasa",
-        "url": "https://eddirasa.com/ens-sec/3as/francais/tests-science-term-1/",
-        "default_term": "first_term",
-        "root_domain": "eddirasa.com",
-    },
-    {
-        "site": "ency_education",
-        "suffix": "ency_education",
-        "url": "https://3as.ency-education.com/french-sci-exams.html",
-        "default_term": None,
-        "root_domain": "ency-education.com",
-    },
+    {"site": "dzexams", "suffix": "dzexams", "url": "https://www.dzexams.com/ar/3as/francais/as_d1", "default_term": "first_term", "root_domain": "dzexams.com"},
+    {"site": "eddirasa", "suffix": "eddirasa", "url": "https://eddirasa.com/ens-sec/3as/francais/tests-science-term-1/", "default_term": "first_term", "root_domain": "eddirasa.com"},
+    {"site": "ency_education", "suffix": "ency_education", "url": "https://3as.ency-education.com/french-sci-exams.html", "default_term": None, "root_domain": "ency-education.com"},
 ]
 
-HEADERS = {
-    "User-Agent": "Mozilla/5.0 (compatible; MY-Algeria-BAC-content-importer/1.1; +https://github.com/mounirnasritlm/my-algeria-bac-content)"
-}
-
+HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; MY-Algeria-BAC-content-importer/1.2; +https://github.com/mounirnasritlm/my-algeria-bac-content)"}
 TERM_PATTERNS = [
     ("first_term", re.compile(r"premier|1er|term[ei]?-?1|الفصل\s*الأول|الفصل\s*1|1er\s*trimestre", re.I)),
     ("second_term", re.compile(r"deuxi|2[eè]me|term[ei]?-?2|الفصل\s*الثاني|الفصل\s*2|2e\s*trimestre", re.I)),
     ("third_term", re.compile(r"troisi|3[eè]me|term[ei]?-?3|الفصل\s*الثالث|الفصل\s*3|3e\s*trimestre", re.I)),
 ]
-
 YEAR_RE = re.compile(r"(?:19|20)\d{2}(?:[/-](?:19|20)?\d{2})?")
 CORRECTION_RE = re.compile(r"corrig|correction|corrig[eé]|solution|حل|تصحيح", re.I)
 LINK_KEYWORDS_RE = re.compile(r"exemple|devoir|test|exam|composition|corrig|correction|sujet|حل|تصحيح", re.I)
@@ -70,8 +48,7 @@ def same_root_domain(url: str, seed: dict) -> bool:
 
 
 def clean_name(value: str) -> str:
-    value = value.strip()
-    value = re.sub(r"\s+", " ", value)
+    value = re.sub(r"\s+", " ", value.strip())
     value = re.sub(r"[\\/:*?\"<>|]+", "-", value)
     value = re.sub(r"[^\w\- .()\u0600-\u06FF]+", "-", value, flags=re.UNICODE)
     value = re.sub(r"-+", "-", value).strip(" .-")
@@ -90,54 +67,90 @@ def infer_term(text: str, default: str | None) -> str:
     return default or "unspecified"
 
 
-def fetch(url: str) -> tuple[str, str]:
+def fetch_html(url: str) -> tuple[str, str]:
     r = session.get(url, timeout=45, allow_redirects=True)
     r.raise_for_status()
-    content_type = (r.headers.get("content-type") or "").lower()
-    if "pdf" in content_type:
+    if "pdf" in (r.headers.get("content-type") or "").lower():
         raise ValueError("expected HTML page but received PDF")
     r.encoding = r.encoding or "utf-8"
     return r.text, r.url
 
 
-def candidate_links(seed: dict) -> list[tuple[str, str, str, str | None]]:
-    """Return (pdf_url, anchor_text, context_text, page_url)."""
+def add_candidate(pdfs: dict, url: str, anchor: str, context: str, page_url: str, section_term: str | None) -> None:
+    if PDF_RE.search(url):
+        pdfs[url] = (anchor, context, page_url, section_term)
+
+
+def candidate_links(seed: dict) -> list[tuple[str, str, str, str | None, str | None]]:
+    """Return (pdf_url, anchor_text, context_text, page_url, section_term)."""
     seen_pages: set[str] = set()
-    pdfs: dict[str, tuple[str, str, str | None]] = {}
-    queue: list[tuple[str, int]] = [(seed["url"], 0)]
+    pdfs: dict[str, tuple[str, str, str | None, str | None]] = {}
+    queue: list[tuple[str, int, str | None]] = [(seed["url"], 0, seed["default_term"])]
 
     while queue:
-        page_url, depth = queue.pop(0)
+        page_url, depth, inherited_term = queue.pop(0)
         if page_url in seen_pages or depth > 2:
             continue
         seen_pages.add(page_url)
         try:
-            html, final_url = fetch(page_url)
+            html, final_url = fetch_html(page_url)
         except Exception as exc:
             print(f"WARN page fetch failed: {page_url}: {exc}")
             continue
 
         soup = BeautifulSoup(html, "html.parser")
-        body_text = soup.get_text(" ", strip=True)
-        for a in soup.find_all("a", href=True):
-            href = normalize_url(final_url, a.get("href", ""))
-            if not href or href.startswith(("javascript:", "mailto:", "tel:")):
+        current_term = inherited_term
+
+        # Preserve the section/term currently containing each link.
+        elements = soup.find_all(["h1", "h2", "h3", "h4", "h5", "h6", "a", "iframe", "embed", "object", "source"])
+        for element in elements:
+            if element.name in {"h1", "h2", "h3", "h4", "h5", "h6"}:
+                heading = element.get_text(" ", strip=True)
+                detected = infer_term(heading, None)
+                if detected != "unspecified":
+                    current_term = detected
                 continue
-            anchor = a.get_text(" ", strip=True)
-            parent = a.parent.get_text(" ", strip=True) if a.parent else anchor
-            context = " ".join([anchor, parent, body_text[:1600]])
 
-            if PDF_RE.search(href):
-                pdfs[href] = (anchor, context, final_url)
+            href = element.get("href") or element.get("src") or element.get("data")
+            if not href:
+                for attr in ("data-href", "data-url", "data-pdf", "onclick"):
+                    if element.get(attr):
+                        href = element.get(attr)
+                        break
+            if not href:
                 continue
 
-            path = urlparse(href).path.lower()
-            likely_document_link = bool(LINK_KEYWORDS_RE.search(" ".join([anchor, context, path])))
-            if depth < 2 and (same_root_domain(href, seed) or likely_document_link) and likely_document_link:
-                if href not in seen_pages:
-                    queue.append((href, depth + 1))
+            # Also extract embedded absolute PDF URLs from attributes/inline JS.
+            raw_values = [str(href)]
+            raw_values.extend(str(element.get(a)) for a in ("data-href", "data-url", "data-pdf", "onclick") if element.get(a))
+            expanded: set[str] = set()
+            for raw in raw_values:
+                for match in re.findall(r"https?://[^\"'\\s<>]+\.pdf(?:\?[^\"'\\s<>]*)?", raw, flags=re.I):
+                    expanded.add(match)
+                expanded.add(normalize_url(final_url, raw))
 
-    return [(u, a, c, p) for u, (a, c, p) in pdfs.items()]
+            anchor = element.get_text(" ", strip=True)
+            parent = element.parent.get_text(" ", strip=True) if element.parent else anchor
+            context = " ".join([anchor, parent])
+
+            for resolved in expanded:
+                if not resolved or resolved.startswith(("javascript:", "mailto:", "tel:")):
+                    continue
+                if PDF_RE.search(resolved):
+                    add_candidate(pdfs, resolved, anchor, context, final_url, current_term)
+                    continue
+
+                path = urlparse(resolved).path.lower()
+                likely_document_link = bool(LINK_KEYWORDS_RE.search(" ".join([anchor, context, path])))
+                if depth < 2 and likely_document_link and (same_root_domain(resolved, seed) or re.search(r"exemple|devoir|exam|test|corrig|sujet", anchor, re.I)):
+                    if resolved not in seen_pages:
+                        queue.append((resolved, depth + 1, current_term))
+
+        # Fallback: direct absolute PDF URLs present anywhere in raw HTML.
+        for raw_pdf in re.findall(r"https?://[^\"'\\s<>]+\.pdf(?:\?[^\"'\\s<>]*)?", html, flags=re.I):
+            add_candidate(pdfs, raw_pdf, "", "", final_url, current_term)
+
+    return [(u, a, c, p, t) for u, (a, c, p, t) in pdfs.items()]
 
 
 def source_folder(term: str, is_correction: bool) -> Path:
@@ -147,12 +160,10 @@ def source_folder(term: str, is_correction: bool) -> Path:
 
 
 def build_filename(url: str, anchor: str, suffix: str, used: set[str]) -> str:
-    original = Path(urlparse(url).path).name
-    stem = Path(original).stem
+    stem = Path(urlparse(url).path).stem
     if not stem or len(stem) < 3:
         stem = anchor or "document"
-    stem = clean_name(stem)
-    base = f"{stem}__{suffix}"
+    base = f"{clean_name(stem)}__{suffix}"
     candidate = base + ".pdf"
     if candidate in used:
         digest = hashlib.sha256(url.encode("utf-8")).hexdigest()[:8]
@@ -172,13 +183,12 @@ def main() -> int:
         print(f"== {seed['site']} ==")
         links = candidate_links(seed)
         print(f"found {len(links)} PDF links")
-        for idx, (pdf_url, anchor, context, page_url) in enumerate(links, 1):
-            combined = " ".join([anchor, context, page_url])
-            term = infer_term(combined, seed["default_term"])
+        for idx, (pdf_url, anchor, context, page_url, section_term) in enumerate(links, 1):
+            combined = " ".join([anchor, context, page_url, pdf_url])
+            term = section_term or infer_term(combined, seed["default_term"])
             is_correction = bool(CORRECTION_RE.search(" ".join([anchor, context, pdf_url])))
             folder = source_folder(term, is_correction)
             folder.mkdir(parents=True, exist_ok=True)
-
             filename = build_filename(pdf_url, anchor, seed["suffix"], used_names)
             destination = folder / filename
             print(f"[{idx}/{len(links)}] {pdf_url} -> {destination}")
@@ -197,16 +207,7 @@ def main() -> int:
                 digest = sha256.hexdigest()
             except Exception as exc:
                 print(f"ERROR download failed: {pdf_url}: {exc}")
-                records.append({
-                    "status": "failed",
-                    "site": seed["site"],
-                    "source_url": pdf_url,
-                    "index_page": page_url,
-                    "anchor": anchor,
-                    "term": term,
-                    "is_correction": is_correction,
-                    "error": str(exc),
-                })
+                records.append({"status": "failed", "site": seed["site"], "source_url": pdf_url, "index_page": page_url, "anchor": anchor, "term": term, "is_correction": is_correction, "error": str(exc)})
                 continue
 
             duplicate_of = seen_hashes.get(digest)
@@ -237,7 +238,7 @@ def main() -> int:
             time.sleep(0.1)
 
     MANIFEST.write_text(json.dumps({
-        "schema_version": "1.1",
+        "schema_version": "1.2",
         "subject": "french",
         "level": "3AS",
         "branch_group": "common_or_scientific",
@@ -246,7 +247,6 @@ def main() -> int:
         "count": len(records),
         "records": records,
     }, ensure_ascii=False, indent=2), encoding="utf-8")
-
     print(f"Wrote {len(records)} manifest records to {MANIFEST}")
     return 0
 
