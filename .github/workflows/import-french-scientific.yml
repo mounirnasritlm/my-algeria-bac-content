@@ -1,0 +1,67 @@
+name: Import French 3AS Scientific Resources
+
+on:
+  push:
+    paths:
+      - 'tools/import_french_scientific.py'
+      - '.github/workflows/import-french-scientific.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: french-scientific-import
+  cancel-in-progress: false
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install scraper dependencies
+        run: python -m pip install --upgrade requests beautifulsoup4
+
+      - name: Import French scientific PDFs
+        run: python tools/import_french_scientific.py
+
+      - name: Show imported files
+        run: |
+          echo 'Downloaded PDFs:'
+          find content/3as/subjects/french/variants/common_or_scientific/resources -type f -name '*.pdf' | sort || true
+          echo 'Manifest:'
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('content/3as/subjects/french/variants/common_or_scientific/source_metadata/french_scientific_sources.json')
+          d = json.loads(p.read_text(encoding='utf-8'))
+          print('records =', d.get('count', 0))
+          from collections import Counter
+          print('by_site =', dict(Counter(x.get('site') for x in d.get('records', []))))
+          print('by_term =', dict(Counter(x.get('term') for x in d.get('records', []))))
+          print('corrections =', sum(1 for x in d.get('records', []) if x.get('is_correction')))
+          print('failed =', sum(1 for x in d.get('records', []) if x.get('status') == 'failed'))
+          PY
+
+      - name: Commit imported content
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add content/3as/subjects/french/variants/common_or_scientific/
+          if git diff --cached --quiet; then
+            echo 'No new French scientific resources.'
+            exit 0
+          fi
+          COUNT=$(find content/3as/subjects/french/variants/common_or_scientific/resources -type f -name '*.pdf' | wc -l | tr -d ' ')
+          git commit -m "content: import French 3AS scientific resources (${COUNT} PDFs) [skip ci]"
+          git push
