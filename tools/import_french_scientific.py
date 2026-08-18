@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+# Trigger a GitHub Actions push event through PR merge after importer fixes.
+
 import hashlib
 import json
 import re
@@ -82,7 +84,6 @@ def add_candidate(pdfs: dict, url: str, anchor: str, context: str, page_url: str
 
 
 def candidate_links(seed: dict) -> list[tuple[str, str, str, str | None, str | None]]:
-    """Return (pdf_url, anchor_text, context_text, page_url, section_term)."""
     seen_pages: set[str] = set()
     pdfs: dict[str, tuple[str, str, str | None, str | None]] = {}
     queue: list[tuple[str, int, str | None]] = [(seed["url"], 0, seed["default_term"])]
@@ -100,8 +101,6 @@ def candidate_links(seed: dict) -> list[tuple[str, str, str, str | None, str | N
 
         soup = BeautifulSoup(html, "html.parser")
         current_term = inherited_term
-
-        # Preserve the section/term currently containing each link.
         elements = soup.find_all(["h1", "h2", "h3", "h4", "h5", "h6", "a", "iframe", "embed", "object", "source"])
         for element in elements:
             if element.name in {"h1", "h2", "h3", "h4", "h5", "h6"}:
@@ -120,7 +119,6 @@ def candidate_links(seed: dict) -> list[tuple[str, str, str, str | None, str | N
             if not href:
                 continue
 
-            # Also extract embedded absolute PDF URLs from attributes/inline JS.
             raw_values = [str(href)]
             raw_values.extend(str(element.get(a)) for a in ("data-href", "data-url", "data-pdf", "onclick") if element.get(a))
             expanded: set[str] = set()
@@ -146,7 +144,6 @@ def candidate_links(seed: dict) -> list[tuple[str, str, str, str | None, str | N
                     if resolved not in seen_pages:
                         queue.append((resolved, depth + 1, current_term))
 
-        # Fallback: direct absolute PDF URLs present anywhere in raw HTML.
         for raw_pdf in re.findall(r"https?://[^\"'\\s<>]+\.pdf(?:\?[^\"'\\s<>]*)?", html, flags=re.I):
             add_candidate(pdfs, raw_pdf, "", "", final_url, current_term)
 
