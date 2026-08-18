@@ -5,6 +5,8 @@ on:
     paths:
       - 'tools/import_french_scientific.py'
       - '.github/workflows/import-french-scientific.yml'
+  pull_request:
+    types: [closed]
   workflow_dispatch:
 
 permissions:
@@ -16,6 +18,7 @@ concurrency:
 
 jobs:
   import:
+    if: github.event_name != 'pull_request' || github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
