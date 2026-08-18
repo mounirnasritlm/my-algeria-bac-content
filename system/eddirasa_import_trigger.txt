@@ -1,0 +1,1 @@
+GitHub Actions trigger for the full Eddirasa 3AS French ingestion.
