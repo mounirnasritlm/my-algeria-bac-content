@@ -37,8 +37,24 @@ jobs:
       - name: Install scraper dependencies
         run: python -m pip install --upgrade requests beautifulsoup4
 
+      - name: Clean previous incorrect import
+        run: |
+          rm -rf content/3as/subjects/french/variants/common_or_scientific/resources
+          rm -f content/3as/subjects/french/variants/common_or_scientific/source_metadata/french_scientific_sources.json
+
       - name: Import French scientific PDFs
         run: python tools/import_french_scientific.py
+
+      - name: Validate downloaded files are PDFs
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          for p in Path('content/3as/subjects/french/variants/common_or_scientific/resources').rglob('*.pdf'):
+              b = p.read_bytes()[:5]
+              if b != b'%PDF-':
+                  raise SystemExit(f'Not a real PDF: {p} header={b!r}')
+          print('All downloaded .pdf files have a valid PDF header.')
+          PY
 
       - name: Show imported files
         run: |
@@ -64,7 +80,7 @@ jobs:
           git config user.email 'github-actions[bot]@users.noreply.github.com'
           git add content/3as/subjects/french/variants/common_or_scientific/
           if git diff --cached --quiet; then
-            echo 'No new French scientific resources.'
+            echo 'No changes to commit.'
             exit 0
           fi
           COUNT=$(find content/3as/subjects/french/variants/common_or_scientific/resources -type f -name '*.pdf' | wc -l | tr -d ' ')
