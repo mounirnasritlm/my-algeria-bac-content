@@ -1,0 +1,1506 @@
+name: Ingest Eddirasa 3AS French
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "dry-run = discover only, import = download and commit"
+        required: true
+        default: "import"
+        type: choice
+        options:
+          - dry-run
+          - import
+
+      max_files:
+        description: "Maximum number of documents to import (0 = unlimited)"
+        required: true
+        default: "0"
+        type: string
+
+      clean_previous:
+        description: "Remove previous Eddirasa French import before importing"
+        required: true
+        default: false
+        type: boolean
+
+  schedule:
+    - cron: "0 2 * * 0"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: eddirasa-french-ingestion
+  cancel-in-progress: false
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+
+    env:
+      ROOT_URL: https://eddirasa.com/ens-sec/3as/francais/
+      OUTPUT_ROOT: content/3as/branches/_shared/subjects/french
+      SOURCE_ID: eddirasa
+      MAX_FILES: ${{ inputs.max_files || '0' }}
+
+    steps:
+
+      # ------------------------------------------------------------
+      # 1. Checkout repository
+      # ------------------------------------------------------------
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # ------------------------------------------------------------
+      # 2. Python
+      # ------------------------------------------------------------
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # ------------------------------------------------------------
+      # 3. System dependencies
+      # ------------------------------------------------------------
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            poppler-utils \
+            libmagic1
+
+      # ------------------------------------------------------------
+      # 4. Python dependencies
+      # ------------------------------------------------------------
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+
+          pip install \
+            requests \
+            beautifulsoup4 \
+            lxml \
+            pypdf \
+            python-magic \
+            tqdm
+
+      # ------------------------------------------------------------
+      # 5. Create importer
+      # ------------------------------------------------------------
+      - name: Create importer
+        run: |
+          mkdir -p tools
+
+          cat > tools/eddirasa_french_importer.py <<'PY'
+          import os
+          import re
+          import json
+          import time
+          import hashlib
+          import mimetypes
+          from pathlib import Path
+          from urllib.parse import (
+              urljoin,
+              urlparse,
+              parse_qs,
+              unquote,
+          )
+
+          import requests
+          from bs4 import BeautifulSoup
+          from pypdf import PdfReader
+
+
+          ROOT_URL = os.environ.get(
+              "ROOT_URL",
+              "https://eddirasa.com/ens-sec/3as/francais/"
+          )
+
+          OUTPUT_ROOT = Path(
+              os.environ.get(
+                  "OUTPUT_ROOT",
+                  "content/3as/branches/_shared/subjects/french"
+              )
+          )
+
+          SOURCE_ID = os.environ.get("SOURCE_ID", "eddirasa")
+
+          MODE = os.environ.get("MODE", "import")
+
+          MAX_FILES = int(
+              os.environ.get("MAX_FILES", "0") or "0"
+          )
+
+          SESSION = requests.Session()
+
+          SESSION.headers.update({
+              "User-Agent": (
+                  "Mozilla/5.0 "
+                  "(X11; Linux x86_64) "
+                  "AppleWebKit/537.36 "
+                  "(KHTML, like Gecko) "
+                  "Chrome/131 Safari/537.36"
+              )
+          })
+
+
+          MANIFEST_DIR = OUTPUT_ROOT / "source_metadata"
+          MANIFEST_PATH = (
+              MANIFEST_DIR /
+              "eddirasa_3as_french_manifest.json"
+          )
+
+          TEMP_DIR = Path(".ingestion_tmp")
+          PDF_TEMP_DIR = TEMP_DIR / "pdfs"
+
+          USER_AGENT = SESSION.headers["User-Agent"]
+
+
+          def normalize_url(url):
+              if not url:
+                  return None
+
+              url = url.strip()
+
+              if url.startswith("//"):
+                  return "https:" + url
+
+              if url.startswith("/"):
+                  return urljoin(ROOT_URL, url)
+
+              if not url.startswith(("http://", "https://")):
+                  return urljoin(ROOT_URL, url)
+
+              return url
+
+
+          def clean_text(value):
+              if not value:
+                  return ""
+
+              value = re.sub(r"\s+", " ", value)
+              return value.strip()
+
+
+          def sha256_file(path):
+              h = hashlib.sha256()
+
+              with open(path, "rb") as f:
+                  while True:
+                      chunk = f.read(1024 * 1024)
+
+                      if not chunk:
+                          break
+
+                      h.update(chunk)
+
+              return h.hexdigest()
+
+
+          def is_real_pdf(path):
+              try:
+                  with open(path, "rb") as f:
+                      header = f.read(5)
+
+                  return header == b"%PDF-"
+
+              except Exception:
+                  return False
+
+
+          def safe_filename(name):
+              name = unquote(name)
+
+              name = re.sub(
+                  r'[<>:"/\\|?*\x00-\x1f]',
+                  "_",
+                  name
+              )
+
+              name = re.sub(
+                  r"\s+",
+                  " ",
+                  name
+              )
+
+              return name.strip(" .") or "document"
+
+
+          def add_source_suffix(filename):
+              p = Path(filename)
+
+              stem = p.stem
+              suffix = p.suffix
+
+              if f"__{SOURCE_ID}" in stem:
+                  return filename
+
+              return (
+                  f"{stem}__{SOURCE_ID}{suffix}"
+              )
+
+
+          def classify_section(url, title="", text=""):
+              value = (
+                  f"{url} "
+                  f"{title} "
+                  f"{text}"
+              ).lower()
+
+              # Literary / humanities
+              literary_words = [
+                  "lettres",
+                  "littéraire",
+                  "litteraire",
+                  "adab",
+                  "lettres et philosophie",
+                  "langues étrangères",
+                  "langues etrangeres",
+              ]
+
+              for word in literary_words:
+                  if word in value:
+                      return "literary"
+
+              # Scientific / common scientific
+              scientific_words = [
+                  "science",
+                  "scientifique",
+                  "scientifiques",
+                  "math",
+                  "mathematique",
+                  "technique",
+                  "gestion",
+                  "economie",
+                  "économie",
+                  "scientific",
+              ]
+
+              for word in scientific_words:
+                  if word in value:
+                      return "common_or_scientific"
+
+              return "common"
+
+
+          def classify_resource(url, title="", text=""):
+              value = (
+                  f"{url} "
+                  f"{title} "
+                  f"{text}"
+              ).lower()
+
+              # Correction
+              if any(x in value for x in [
+                  "corrigé",
+                  "corrige",
+                  "correction",
+                  "solution",
+                  "solutions",
+              ]):
+                  return "correction"
+
+              # Devoir
+              if any(x in value for x in [
+                  "devoir",
+                  "devoirs",
+                  "فرض",
+                  "فروض",
+              ]):
+                  return "devoir"
+
+              # Test / exam
+              if any(x in value for x in [
+                  "test",
+                  "tests",
+                  "examen",
+                  "examens",
+                  "اختبار",
+                  "اختبارات",
+                  "امتحان",
+                  "امتحانات",
+              ]):
+                  return "test_exam"
+
+              # Course / lesson
+              if any(x in value for x in [
+                  "cours",
+                  "course",
+                  "lesson",
+                  "leçon",
+                  "lecon",
+                  "درس",
+                  "دروس",
+                  "مذكرة",
+                  "مذكرات",
+              ]):
+                  return "course"
+
+              # Summary
+              if any(x in value for x in [
+                  "résumé",
+                  "resume",
+                  "résumés",
+                  "ملخص",
+                  "ملخصات",
+              ]):
+                  return "summary"
+
+              # Book
+              if any(x in value for x in [
+                  "livre",
+                  "livres",
+                  "book",
+                  "books",
+                  "كتاب",
+                  "كتب",
+              ]):
+                  return "book"
+
+              # Teacher book
+              if any(x in value for x in [
+                  "professeur",
+                  "teacher",
+                  "enseignant",
+                  "guide du professeur",
+                  "guide professeur",
+              ]):
+                  return "teacher_book"
+
+              # Program / curriculum
+              if any(x in value for x in [
+                  "programme",
+                  "curriculum",
+                  "progression",
+                  "منهاج",
+                  "برنامج",
+              ]):
+                  return "curriculum_programme"
+
+              # Other
+              return "other"
+
+
+          def classify_term(url, title="", text=""):
+              value = (
+                  f"{url} "
+                  f"{title} "
+                  f"{text}"
+              ).lower()
+
+              if any(x in value for x in [
+                  "premier trimestre",
+                  "1er trimestre",
+                  "trimestre 1",
+                  "term 1",
+                  "الفصل الأول",
+                  "الفصل الاول",
+                  "1er",
+                  "t1",
+              ]):
+                  return "first_term"
+
+              if any(x in value for x in [
+                  "deuxième trimestre",
+                  "deuxieme trimestre",
+                  "2ème trimestre",
+                  "2eme trimestre",
+                  "trimestre 2",
+                  "term 2",
+                  "الفصل الثاني",
+                  "الفصل الثانى",
+                  "2eme",
+                  "t2",
+              ]):
+                  return "second_term"
+
+              if any(x in value for x in [
+                  "troisième trimestre",
+                  "troisieme trimestre",
+                  "3ème trimestre",
+                  "3eme trimestre",
+                  "trimestre 3",
+                  "term 3",
+                  "الفصل الثالث",
+                  "الفصل الثالث",
+                  "3eme",
+                  "t3",
+              ]):
+                  return "third_term"
+
+              return "unspecified"
+
+
+          def extract_year(value):
+              if not value:
+                  return None
+
+              # 2024 / 2025
+              matches = re.findall(
+                  r"\b(20\d{2})\b",
+                  value
+              )
+
+              if matches:
+                  return matches[-1]
+
+              # 2024-2025
+              match = re.search(
+                  r"(20\d{2})\s*[-/]\s*(20\d{2})",
+                  value
+              )
+
+              if match:
+                  return (
+                      f"{match.group(1)}-"
+                      f"{match.group(2)}"
+                  )
+
+              return None
+
+
+          def extract_real_pdf_url(url):
+              """
+              Eddirasa often uses:
+
+              viewer.html?file=https://...pdf
+
+              Extract the actual PDF URL.
+              """
+
+              parsed = urlparse(url)
+
+              qs = parse_qs(parsed.query)
+
+              for key in [
+                  "file",
+                  "url",
+                  "pdf",
+                  "src",
+                  "document",
+              ]:
+                  values = qs.get(key)
+
+                  if not values:
+                      continue
+
+                  candidate = unquote(
+                      values[0]
+                  )
+
+                  candidate = normalize_url(
+                      candidate
+                  )
+
+                  if candidate:
+                      return candidate
+
+              return url
+
+
+          def get_html(url):
+              try:
+                  response = SESSION.get(
+                      url,
+                      timeout=45,
+                      allow_redirects=True
+                  )
+
+                  response.raise_for_status()
+
+                  content_type = (
+                      response.headers
+                      .get("content-type", "")
+                      .lower()
+                  )
+
+                  if "text/html" not in content_type:
+                      return None, response.url
+
+                  return response.text, response.url
+
+              except Exception as exc:
+                  print(
+                      f"[WARN] HTML failed: {url}: {exc}"
+                  )
+
+                  return None, url
+
+
+          def extract_links(page_url, html):
+              soup = BeautifulSoup(
+                  html,
+                  "lxml"
+              )
+
+              links = []
+
+              for tag in soup.find_all(True):
+                  attrs = tag.attrs or {}
+
+                  for key, value in attrs.items():
+                      if key.startswith("data-"):
+                          if isinstance(value, str):
+                              links.append(
+                                  normalize_url(
+                                      urljoin(
+                                          page_url,
+                                          value
+                                      )
+                                  )
+                              )
+
+                  for key in [
+                      "href",
+                      "src",
+                      "data-href",
+                      "data-url",
+                      "data-pdf",
+                      "data-file",
+                  ]:
+                      value = attrs.get(key)
+
+                      if isinstance(value, str):
+                          links.append(
+                              normalize_url(
+                                  urljoin(
+                                      page_url,
+                                      value
+                                  )
+                              )
+                          )
+
+                  onclick = attrs.get(
+                      "onclick",
+                      ""
+                  )
+
+                  if isinstance(onclick, str):
+                      found = re.findall(
+                          r"""['"]([^'"]+\.pdf[^'"]*)['"]""",
+                          onclick,
+                          re.I
+                      )
+
+                      for item in found:
+                          links.append(
+                              normalize_url(
+                                  urljoin(
+                                      page_url,
+                                      item
+                                  )
+                              )
+                          )
+
+              # Raw HTML PDF URLs
+              for match in re.findall(
+                  r'https?://[^"\']+\.pdf(?:\?[^"\']*)?',
+                  html,
+                  re.I
+              ):
+                  links.append(
+                      normalize_url(match)
+                  )
+
+              return [
+                  x for x in dict.fromkeys(
+                      links
+                  )
+                  if x
+              ]
+
+
+          def discover_pages():
+              queue = [
+                  ROOT_URL
+              ]
+
+              visited = set()
+              pdf_candidates = []
+
+              while queue:
+                  page_url = queue.pop(0)
+
+                  if page_url in visited:
+                      continue
+
+                  visited.add(page_url)
+
+                  print(
+                      f"[PAGE] {page_url}"
+                  )
+
+                  html, final_url = get_html(
+                      page_url
+                  )
+
+                  if not html:
+                      continue
+
+                  soup = BeautifulSoup(
+                      html,
+                      "lxml"
+                  )
+
+                  page_title = clean_text(
+                      soup.title.get_text()
+                      if soup.title
+                      else ""
+                  )
+
+                  page_text = clean_text(
+                      soup.get_text(" ")
+                  )
+
+                  links = extract_links(
+                      final_url,
+                      html
+                  )
+
+                  for link in links:
+                      low = link.lower()
+
+                      # Real PDF URL
+                      if ".pdf" in low:
+                          pdf_candidates.append({
+                              "url": extract_real_pdf_url(
+                                  link
+                              ),
+                              "page_url": final_url,
+                              "title": page_title,
+                              "context": page_text[:4000],
+                          })
+
+                      # Follow Eddirasa pages
+                      parsed = urlparse(link)
+
+                      root_host = urlparse(
+                          ROOT_URL
+                      ).netloc
+
+                      if (
+                          parsed.netloc == root_host
+                          and
+                          "/ens-sec/3as/francais" in
+                          parsed.path
+                          and
+                          link not in visited
+                      ):
+                          queue.append(link)
+
+                  # Protect the runner from infinite crawl
+                  if len(visited) > 2000:
+                      break
+
+              return pdf_candidates
+
+
+          def download_pdf(item, index):
+              url = item["url"]
+
+              parsed = urlparse(url)
+
+              raw_name = Path(
+                  parsed.path
+              ).name
+
+              if not raw_name:
+                  raw_name = (
+                      f"document-{index}.pdf"
+                  )
+
+              raw_name = safe_filename(
+                  raw_name
+              )
+
+              if not raw_name.lower().endswith(
+                  ".pdf"
+              ):
+                  raw_name += ".pdf"
+
+              raw_name = add_source_suffix(
+                  raw_name
+              )
+
+              destination = (
+                  PDF_TEMP_DIR /
+                  f"{index:05d}__{raw_name}"
+              )
+
+              destination.parent.mkdir(
+                  parents=True,
+                  exist_ok=True
+              )
+
+              print(
+                  f"[PDF] {url}"
+              )
+
+              response = SESSION.get(
+                  url,
+                  timeout=120,
+                  stream=True,
+                  allow_redirects=True
+              )
+
+              response.raise_for_status()
+
+              with open(
+                  destination,
+                  "wb"
+              ) as f:
+                  for chunk in response.iter_content(
+                      chunk_size=1024 * 1024
+                  ):
+                      if chunk:
+                          f.write(chunk)
+
+              if not is_real_pdf(
+                  destination
+              ):
+                  destination.unlink(
+                      missing_ok=True
+                  )
+
+                  raise ValueError(
+                      "Downloaded content is not a real PDF"
+                  )
+
+              return destination, response.url
+
+
+          def extract_pdf(pdf_path):
+              try:
+                  reader = PdfReader(
+                      str(pdf_path)
+                  )
+
+                  pages = []
+
+                  for number, page in enumerate(
+                      reader.pages,
+                      start=1
+                  ):
+                      try:
+                          text = (
+                              page.extract_text()
+                              or ""
+                          )
+                      except Exception:
+                          text = ""
+
+                      pages.append({
+                          "page": number,
+                          "text": text
+                      })
+
+                  return {
+                      "status": "success",
+                      "page_count": len(
+                          pages
+                      ),
+                      "pages": pages
+                  }
+
+              except Exception as exc:
+                  return {
+                      "status": "failed",
+                      "page_count": 0,
+                      "pages": [],
+                      "error": str(exc)
+                  }
+
+
+          def build_output_path(
+              pdf_path,
+              item
+          ):
+              title = item.get(
+                  "title",
+                  ""
+              )
+
+              context = item.get(
+                  "context",
+                  ""
+              )
+
+              branch_group = classify_section(
+                  item["page_url"],
+                  title,
+                  context
+              )
+
+              resource_type = classify_resource(
+                  item["page_url"],
+                  title,
+                  context
+              )
+
+              term = classify_term(
+                  item["page_url"],
+                  title,
+                  context
+              )
+
+              if resource_type == "devoir":
+                  if term == "unspecified":
+                      term = "unspecified"
+
+                  relative_dir = (
+                      "resources/"
+                      f"{branch_group}/"
+                      "devoirs/"
+                      f"{term}"
+                  )
+
+              elif resource_type == "test_exam":
+                  relative_dir = (
+                      "resources/"
+                      f"{branch_group}/"
+                      "tests_exams/"
+                      f"{term}"
+                  )
+
+              elif resource_type == "correction":
+                  relative_dir = (
+                      "resources/"
+                      f"{branch_group}/"
+                      "corrections/"
+                      f"{term}"
+                  )
+
+              elif resource_type == "course":
+                  relative_dir = (
+                      "resources/"
+                      f"{branch_group}/"
+                      "courses_lessons"
+                  )
+
+              elif resource_type == "summary":
+                  relative_dir = (
+                      "resources/"
+                      f"{branch_group}/"
+                      "summaries"
+                  )
+
+              elif resource_type == "book":
+                  relative_dir = (
+                      "resources/"
+                      f"{branch_group}/"
+                      "books"
+                  )
+
+              elif resource_type == "teacher_book":
+                  relative_dir = (
+                      "resources/"
+                      f"{branch_group}/"
+                      "teacher_books"
+                  )
+
+              elif resource_type == "curriculum_programme":
+                  relative_dir = (
+                      "resources/"
+                      f"{branch_group}/"
+                      "curriculum_programme"
+                  )
+
+              else:
+                  relative_dir = (
+                      "resources/"
+                      f"{branch_group}/"
+                      "other"
+                  )
+
+              return (
+                  OUTPUT_ROOT /
+                  relative_dir /
+                  pdf_path.name
+              )
+
+
+          def main():
+              TEMP_DIR.mkdir(
+                  parents=True,
+                  exist_ok=True
+              )
+
+              PDF_TEMP_DIR.mkdir(
+                  parents=True,
+                  exist_ok=True
+              )
+
+              print(
+                  "========================================"
+              )
+
+              print(
+                  "Eddirasa 3AS French Importer"
+              )
+
+              print(
+                  f"Root: {ROOT_URL}"
+              )
+
+              print(
+                  f"Mode: {MODE}"
+              )
+
+              print(
+                  "========================================"
+              )
+
+              candidates = discover_pages()
+
+              # Deduplicate URLs
+              unique = {}
+
+              for item in candidates:
+                  url = extract_real_pdf_url(
+                      item["url"]
+                  )
+
+                  if url:
+                      unique.setdefault(
+                          url,
+                          item
+                      )
+
+              candidates = list(
+                  unique.values()
+              )
+
+              print(
+                  f"[DISCOVERED] {len(candidates)} PDF candidates"
+              )
+
+              if MAX_FILES > 0:
+                  candidates = candidates[
+                      :MAX_FILES
+                  ]
+
+              records = []
+
+              if MODE == "dry-run":
+                  for index, item in enumerate(
+                      candidates,
+                      start=1
+                  ):
+                      records.append({
+                          "index": index,
+                          "url": item["url"],
+                          "page_url": item["page_url"],
+                          "title": item["title"],
+                          "branch_group":
+                              classify_section(
+                                  item["page_url"],
+                                  item["title"],
+                                  item["context"]
+                              ),
+                          "resource_type":
+                              classify_resource(
+                                  item["page_url"],
+                                  item["title"],
+                                  item["context"]
+                              ),
+                          "term":
+                              classify_term(
+                                  item["page_url"],
+                                  item["title"],
+                                  item["context"]
+                              )
+                      })
+
+                  print(
+                      json.dumps(
+                          records,
+                          ensure_ascii=False,
+                          indent=2
+                      )
+                  )
+
+              else:
+                  seen_hashes = {}
+
+                  for index, item in enumerate(
+                      candidates,
+                      start=1
+                  ):
+                      try:
+                          pdf_path, final_url = (
+                              download_pdf(
+                                  item,
+                                  index
+                              )
+                          )
+
+                          sha = sha256_file(
+                              pdf_path
+                          )
+
+                          # Exact binary duplicate
+                          if sha in seen_hashes:
+                              print(
+                                  "[DUPLICATE] "
+                                  f"{item['url']} "
+                                  f"== "
+                                  f"{seen_hashes[sha]}"
+                              )
+
+                              pdf_path.unlink(
+                                  missing_ok=True
+                              )
+
+                              continue
+
+                          seen_hashes[sha] = (
+                              item["url"]
+                          )
+
+                          output_path = (
+                              build_output_path(
+                                  pdf_path,
+                                  item
+                              )
+                          )
+
+                          output_path.parent.mkdir(
+                              parents=True,
+                              exist_ok=True
+                          )
+
+                          output_path.write_bytes(
+                              pdf_path.read_bytes()
+                          )
+
+                          extraction = (
+                              extract_pdf(
+                                  output_path
+                              )
+                          )
+
+                          extracted_relative = (
+                              output_path
+                              .relative_to(
+                                  OUTPUT_ROOT
+                              )
+                          )
+
+                          extracted_path = (
+                              OUTPUT_ROOT /
+                              "extracted" /
+                              extracted_relative
+                          )
+
+                          extracted_path = (
+                              extracted_path
+                              .with_suffix(
+                                  ".json"
+                              )
+                          )
+
+                          extracted_path.parent.mkdir(
+                              parents=True,
+                              exist_ok=True
+                          )
+
+                          metadata = {
+                              "document_id": sha,
+                              "source_site": SOURCE_ID,
+                              "source_url": item["url"],
+                              "page_url": item["page_url"],
+                              "final_url": final_url,
+                              "title": item["title"],
+                              "filename": output_path.name,
+                              "sha256": sha,
+                              "branch_group":
+                                  classify_section(
+                                      item["page_url"],
+                                      item["title"],
+                                      item["context"]
+                                  ),
+                              "resource_type":
+                                  classify_resource(
+                                      item["page_url"],
+                                      item["title"],
+                                      item["context"]
+                                  ),
+                              "term":
+                                  classify_term(
+                                      item["page_url"],
+                                      item["title"],
+                                      item["context"]
+                                  ),
+                              "has_correction":
+                                  any(
+                                      x in (
+                                          item["title"]
+                                          + " "
+                                          + item["context"]
+                                      ).lower()
+                                      for x in [
+                                          "corrigé",
+                                          "corrige",
+                                          "correction",
+                                          "solution",
+                                          "solutions",
+                                          "مع التصحيح",
+                                          "التصحيح"
+                                      ]
+                                  ),
+                              "correction_mode":
+                                  "embedded_in_same_file"
+                                  if any(
+                                      x in (
+                                          item["title"]
+                                          + " "
+                                          + item["context"]
+                                      ).lower()
+                                      for x in [
+                                          "corrigé",
+                                          "corrige",
+                                          "correction",
+                                          "solution",
+                                          "solutions",
+                                          "مع التصحيح",
+                                          "التصحيح"
+                                      ]
+                                  )
+                                  else "unknown",
+                              "extraction":
+                                  {
+                                      "status":
+                                          extraction[
+                                              "status"
+                                          ],
+                                      "page_count":
+                                          extraction[
+                                              "page_count"
+                                          ]
+                                  }
+                          }
+
+                          with open(
+                              extracted_path,
+                              "w",
+                              encoding="utf-8"
+                          ) as f:
+                              json.dump(
+                                  {
+                                      **metadata,
+                                      "pages":
+                                          extraction[
+                                              "pages"
+                                          ]
+                                  },
+                                  f,
+                                  ensure_ascii=False,
+                                  indent=2
+                              )
+
+                          records.append(
+                              metadata
+                          )
+
+                          pdf_path.unlink(
+                              missing_ok=True
+                          )
+
+                      except Exception as exc:
+                          print(
+                              "[ERROR] "
+                              f"{item['url']}: "
+                              f"{exc}"
+                          )
+
+              MANIFEST_DIR.mkdir(
+                  parents=True,
+                  exist_ok=True
+              )
+
+              manifest = {
+                  "source": SOURCE_ID,
+                  "root_url": ROOT_URL,
+                  "subject": "french",
+                  "academic_level": "3AS",
+                  "document_count":
+                      len(records),
+                  "generated_at":
+                      time.strftime(
+                          "%Y-%m-%dT%H:%M:%SZ",
+                          time.gmtime()
+                      ),
+                  "records": records
+              }
+
+              with open(
+                  MANIFEST_PATH,
+                  "w",
+                  encoding="utf-8"
+              ) as f:
+                  json.dump(
+                      manifest,
+                      f,
+                      ensure_ascii=False,
+                      indent=2
+                  )
+
+              print(
+                  "========================================"
+              )
+
+              print(
+                  f"Imported records: {len(records)}"
+              )
+
+              print(
+                  f"Manifest: {MANIFEST_PATH}"
+              )
+
+              print(
+                  "========================================"
+              )
+
+
+          if __name__ == "__main__":
+              main()
+          PY
+
+      # ------------------------------------------------------------
+      # 6. Determine mode
+      # ------------------------------------------------------------
+      - name: Configure mode
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            echo "MODE=import" >> "$GITHUB_ENV"
+            echo "MAX_FILES=0" >> "$GITHUB_ENV"
+          else
+            echo "MODE=${{ inputs.mode }}" >> "$GITHUB_ENV"
+            echo "MAX_FILES=${{ inputs.max_files || '0' }}" >> "$GITHUB_ENV"
+          fi
+
+      # ------------------------------------------------------------
+      # 7. Optional cleanup
+      # ------------------------------------------------------------
+      - name: Clean previous Eddirasa French import
+        if: ${{ inputs.clean_previous == true }}
+        run: |
+          echo "Cleaning previous Eddirasa French resources..."
+
+          find "${OUTPUT_ROOT}/resources" \
+            -type f \
+            -name "*__eddirasa*" \
+            -delete \
+            || true
+
+          find "${OUTPUT_ROOT}/extracted" \
+            -type f \
+            -name "*__eddirasa*.json" \
+            -delete \
+            || true
+
+          rm -f \
+            "${OUTPUT_ROOT}/source_metadata/eddirasa_3as_french_manifest.json"
+
+      # ------------------------------------------------------------
+      # 8. Run crawler/importer
+      # ------------------------------------------------------------
+      - name: Run Eddirasa importer
+        run: |
+          python tools/eddirasa_french_importer.py
+
+      # ------------------------------------------------------------
+      # 9. Validate PDFs
+      # ------------------------------------------------------------
+      - name: Validate downloaded PDFs
+        if: ${{ env.MODE == 'import' }}
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          root = Path(
+              "content/3as/branches/_shared/subjects/french"
+          )
+
+          pdfs = list(root.rglob("*.pdf"))
+
+          invalid = []
+
+          for pdf in pdfs:
+              try:
+                  with open(pdf, "rb") as f:
+                      header = f.read(5)
+
+                  if header != b"%PDF-":
+                      invalid.append(str(pdf))
+
+              except Exception:
+                  invalid.append(str(pdf))
+
+          print(f"PDF files: {len(pdfs)}")
+          print(f"Invalid PDFs: {len(invalid)}")
+
+          for item in invalid:
+              print(f"INVALID: {item}")
+
+          if invalid:
+              raise SystemExit(
+                  "Invalid PDF files detected"
+              )
+          PY
+
+      # ------------------------------------------------------------
+      # 10. Generate statistics
+      # ------------------------------------------------------------
+      - name: Generate import statistics
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path(
+              "content/3as/branches/_shared/subjects/french"
+          )
+
+          manifest = (
+              root /
+              "source_metadata" /
+              "eddirasa_3as_french_manifest.json"
+          )
+
+          if not manifest.exists():
+              print("Manifest not found")
+              raise SystemExit(1)
+
+          data = json.loads(
+              manifest.read_text(
+                  encoding="utf-8"
+              )
+          )
+
+          records = data.get(
+              "records",
+              []
+          )
+
+          stats = {
+              "total": len(records),
+              "by_branch": {},
+              "by_type": {},
+              "by_term": {},
+              "with_correction": 0
+          }
+
+          for record in records:
+              branch = record.get(
+                  "branch_group",
+                  "unknown"
+              )
+
+              typ = record.get(
+                  "resource_type",
+                  "unknown"
+              )
+
+              term = record.get(
+                  "term",
+                  "unknown"
+              )
+
+              stats["by_branch"][branch] = (
+                  stats["by_branch"].get(
+                      branch,
+                      0
+                  ) + 1
+              )
+
+              stats["by_type"][typ] = (
+                  stats["by_type"].get(
+                      typ,
+                      0
+                  ) + 1
+              )
+
+              stats["by_term"][term] = (
+                  stats["by_term"].get(
+                      term,
+                      0
+                  ) + 1
+              )
+
+              if record.get(
+                  "has_correction"
+              ):
+                  stats[
+                      "with_correction"
+                  ] += 1
+
+          path = (
+              root /
+              "source_metadata" /
+              "eddirasa_3as_french_stats.json"
+          )
+
+          path.write_text(
+              json.dumps(
+                  stats,
+                  ensure_ascii=False,
+                  indent=2
+              ),
+              encoding="utf-8"
+          )
+
+          print(
+              json.dumps(
+                  stats,
+                  ensure_ascii=False,
+                  indent=2
+              )
+          )
+          PY
+
+      # ------------------------------------------------------------
+      # 11. Git status
+      # ------------------------------------------------------------
+      - name: Show Git changes
+        run: |
+          git status --short
+
+          echo ""
+          echo "Files:"
+          find \
+            content/3as/branches/_shared/subjects/french \
+            -type f \
+            | sort \
+            | head -200
+
+      # ------------------------------------------------------------
+      # 12. Commit and push
+      # ------------------------------------------------------------
+      - name: Commit imported content
+        if: ${{ env.MODE == 'import' }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add \
+            content/3as/branches/_shared/subjects/french
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+
+          COUNT=$(find \
+            content/3as/branches/_shared/subjects/french \
+            -type f \
+            | wc -l)
+
+          git commit \
+            -m "ingest: Eddirasa 3AS French resources (${COUNT} files)"
+
+          git push
