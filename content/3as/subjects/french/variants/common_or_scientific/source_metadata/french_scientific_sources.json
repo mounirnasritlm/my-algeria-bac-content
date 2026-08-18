@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "subject": "french",
+  "level": "3AS",
+  "branch_group": "common_or_scientific",
+  "generated_by": "tools/import_french_scientific.py",
+  "sources": [
+    "https://www.dzexams.com/ar/3as/francais/as_d1",
+    "https://eddirasa.com/ens-sec/3as/francais/tests-science-term-1/",
+    "https://3as.ency-education.com/french-sci-exams.html"
+  ],
+  "count": 0,
+  "records": []
+}
