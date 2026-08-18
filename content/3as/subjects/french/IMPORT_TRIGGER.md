@@ -1,0 +1,1 @@
+Temporary trigger for the French scientific importer. Created by the automation workflow bootstrap.
