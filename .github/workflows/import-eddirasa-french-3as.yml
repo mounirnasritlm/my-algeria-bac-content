@@ -1,0 +1,80 @@
+name: Import Eddirasa French 3AS All Resources
+
+on:
+  push:
+    paths:
+      - 'tools/import_eddirasa_french_3as.py'
+      - '.github/workflows/import-eddirasa-french-3as.yml'
+  workflow_dispatch:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: eddirasa-french-3as-all
+  cancel-in-progress: false
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install ingestion dependencies
+        run: python -m pip install --upgrade requests beautifulsoup4 pypdf
+      - name: Clean only this Eddirasa import
+        run: |
+          rm -rf content/3as/branches/_shared/subjects/french/resources
+          rm -rf content/3as/branches/_shared/subjects/french/extracted
+          rm -f content/3as/branches/_shared/subjects/french/source_metadata/eddirasa_3as_french.json
+      - name: Crawl and download all Eddirasa 3AS French documents
+        run: python tools/import_eddirasa_french_3as.py
+      - name: Validate import size and PDF signatures
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path('content/3as/branches/_shared/subjects/french')
+          manifest=json.loads((root/'source_metadata/eddirasa_3as_french.json').read_text(encoding='utf-8'))
+          discovered=manifest['discovered_count']; records=manifest['record_count']
+          files=list((root/'resources').rglob('*'))
+          docs=[p for p in files if p.is_file() and p.suffix.lower() in {'.pdf','.doc','.docx','.ppt','.pptx','.xls','.xlsx','.zip','.rar'}]
+          failed=[x for x in manifest['records'] if x.get('status')=='failed']
+          print('discovered=',discovered,'records=',records,'downloaded files=',len(docs),'failed=',len(failed))
+          if discovered < 500:
+              raise SystemExit(f'Import unexpectedly small: discovered {discovered}; refusing to commit partial crawl')
+          for p in root.joinpath('resources').rglob('*.pdf'):
+              if p.read_bytes()[:5] != b'%PDF-':
+                  raise SystemExit(f'Invalid PDF: {p}')
+          print('PDF signature validation passed')
+          PY
+      - name: Print category and branch summary
+        run: |
+          python - <<'PY'
+          import json
+          from collections import Counter
+          from pathlib import Path
+          d=json.loads(Path('content/3as/branches/_shared/subjects/french/source_metadata/eddirasa_3as_french.json').read_text(encoding='utf-8'))
+          print('CATEGORY',dict(Counter(x.get('category') for x in d['records'])))
+          print('BRANCH_GROUP',dict(Counter(x.get('branch_group') for x in d['records'])))
+          print('TERM',dict(Counter(x.get('term') for x in d['records'])))
+          print('CORRECTION',sum(1 for x in d['records'] if x.get('has_correction')))
+          print('DUPLICATE_CONTENT',sum(1 for x in d['records'] if x.get('status')=='duplicate_content'))
+          print('FAILED',sum(1 for x in d['records'] if x.get('status')=='failed'))
+          PY
+      - name: Commit Eddirasa content
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add content/3as/branches/_shared/subjects/french/
+          if git diff --cached --quiet; then echo 'No changes'; exit 0; fi
+          COUNT=$(find content/3as/branches/_shared/subjects/french/resources -type f \( -name '*.pdf' -o -name '*.doc' -o -name '*.docx' -o -name '*.ppt' -o -name '*.pptx' -o -name '*.xls' -o -name '*.xlsx' -o -name '*.zip' -o -name '*.rar' \) | wc -l | tr -d ' ')
+          git commit -m "content: import all Eddirasa French 3AS resources (${COUNT} files) [skip ci]"
+          git push
