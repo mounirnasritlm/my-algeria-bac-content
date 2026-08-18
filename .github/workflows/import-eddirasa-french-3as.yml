@@ -78,3 +78,5 @@ jobs:
           COUNT=$(find content/3as/branches/_shared/subjects/french/resources -type f \( -name '*.pdf' -o -name '*.doc' -o -name '*.docx' -o -name '*.ppt' -o -name '*.pptx' -o -name '*.xls' -o -name '*.xlsx' -o -name '*.zip' -o -name '*.rar' \) | wc -l | tr -d ' ')
           git commit -m "content: import all Eddirasa French 3AS resources (${COUNT} files) [skip ci]"
           git push
+
+# Full-source ingestion: scientific + literary + common 3AS French categories.
