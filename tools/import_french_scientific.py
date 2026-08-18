@@ -21,23 +21,26 @@ SEEDS = [
         "suffix": "dzexams",
         "url": "https://www.dzexams.com/ar/3as/francais/as_d1",
         "default_term": "first_term",
+        "root_domain": "dzexams.com",
     },
     {
         "site": "eddirasa",
         "suffix": "eddirasa",
         "url": "https://eddirasa.com/ens-sec/3as/francais/tests-science-term-1/",
         "default_term": "first_term",
+        "root_domain": "eddirasa.com",
     },
     {
         "site": "ency_education",
         "suffix": "ency_education",
         "url": "https://3as.ency-education.com/french-sci-exams.html",
         "default_term": None,
+        "root_domain": "ency-education.com",
     },
 ]
 
 HEADERS = {
-    "User-Agent": "Mozilla/5.0 (compatible; MY-Algeria-BAC-content-importer/1.0; +https://github.com/mounirnasritlm/my-algeria-bac-content)"
+    "User-Agent": "Mozilla/5.0 (compatible; MY-Algeria-BAC-content-importer/1.1; +https://github.com/mounirnasritlm/my-algeria-bac-content)"
 }
 
 TERM_PATTERNS = [
@@ -48,6 +51,7 @@ TERM_PATTERNS = [
 
 YEAR_RE = re.compile(r"(?:19|20)\d{2}(?:[/-](?:19|20)?\d{2})?")
 CORRECTION_RE = re.compile(r"corrig|correction|corrig[eé]|solution|حل|تصحيح", re.I)
+LINK_KEYWORDS_RE = re.compile(r"exemple|devoir|test|exam|composition|corrig|correction|sujet|حل|تصحيح", re.I)
 PDF_RE = re.compile(r"\.pdf(?:$|[?#])", re.I)
 
 session = requests.Session()
@@ -60,8 +64,9 @@ def normalize_url(base: str, href: str) -> str:
     return url
 
 
-def same_host(a: str, b: str) -> bool:
-    return urlparse(a).netloc.lower() == urlparse(b).netloc.lower()
+def same_root_domain(url: str, seed: dict) -> bool:
+    host = urlparse(url).netloc.lower().split(":")[0]
+    return host == seed["root_domain"] or host.endswith("." + seed["root_domain"])
 
 
 def clean_name(value: str) -> str:
@@ -86,8 +91,11 @@ def infer_term(text: str, default: str | None) -> str:
 
 
 def fetch(url: str) -> tuple[str, str]:
-    r = session.get(url, timeout=45)
+    r = session.get(url, timeout=45, allow_redirects=True)
     r.raise_for_status()
+    content_type = (r.headers.get("content-type") or "").lower()
+    if "pdf" in content_type:
+        raise ValueError("expected HTML page but received PDF")
     r.encoding = r.encoding or "utf-8"
     return r.text, r.url
 
@@ -113,26 +121,26 @@ def candidate_links(seed: dict) -> list[tuple[str, str, str, str | None]]:
         body_text = soup.get_text(" ", strip=True)
         for a in soup.find_all("a", href=True):
             href = normalize_url(final_url, a.get("href", ""))
-            if not href or not same_host(href, seed["url"]):
+            if not href or href.startswith(("javascript:", "mailto:", "tel:")):
                 continue
             anchor = a.get_text(" ", strip=True)
             parent = a.parent.get_text(" ", strip=True) if a.parent else anchor
-            context = " ".join([anchor, parent, body_text[:1200]])
+            context = " ".join([anchor, parent, body_text[:1600]])
 
             if PDF_RE.search(href):
                 pdfs[href] = (anchor, context, final_url)
                 continue
 
-            # Follow likely document/index pages on the same source.
             path = urlparse(href).path.lower()
-            if depth < 2 and ("franc" in path or "3as" in path or "devoir" in path or "exam" in path or "test" in path or "corr" in path or "french" in path):
+            likely_document_link = bool(LINK_KEYWORDS_RE.search(" ".join([anchor, context, path])))
+            if depth < 2 and (same_root_domain(href, seed) or likely_document_link) and likely_document_link:
                 if href not in seen_pages:
                     queue.append((href, depth + 1))
 
     return [(u, a, c, p) for u, (a, c, p) in pdfs.items()]
 
 
-def source_folder(site: str, term: str, is_correction: bool) -> Path:
+def source_folder(term: str, is_correction: bool) -> Path:
     if is_correction:
         return PDF_ROOT / "corrections" / term
     return PDF_ROOT / {"first_term": "first_term", "second_term": "second_term", "third_term": "third_term", "unspecified": "unspecified"}.get(term, "unspecified")
@@ -165,17 +173,21 @@ def main() -> int:
         links = candidate_links(seed)
         print(f"found {len(links)} PDF links")
         for idx, (pdf_url, anchor, context, page_url) in enumerate(links, 1):
-            term = infer_term(" ".join([anchor, context, page_url]), seed["default_term"])
+            combined = " ".join([anchor, context, page_url])
+            term = infer_term(combined, seed["default_term"])
             is_correction = bool(CORRECTION_RE.search(" ".join([anchor, context, pdf_url])))
-            folder = source_folder(seed["site"], term, is_correction)
+            folder = source_folder(term, is_correction)
             folder.mkdir(parents=True, exist_ok=True)
 
             filename = build_filename(pdf_url, anchor, seed["suffix"], used_names)
             destination = folder / filename
             print(f"[{idx}/{len(links)}] {pdf_url} -> {destination}")
             try:
-                r = session.get(pdf_url, timeout=90, stream=True)
+                r = session.get(pdf_url, timeout=90, stream=True, allow_redirects=True)
                 r.raise_for_status()
+                content_type = (r.headers.get("content-type") or "").lower()
+                if "pdf" not in content_type and not PDF_RE.search(r.url):
+                    raise ValueError(f"URL did not return PDF content: {content_type} {r.url}")
                 sha256 = hashlib.sha256()
                 with destination.open("wb") as f:
                     for chunk in r.iter_content(chunk_size=1024 * 1024):
@@ -212,7 +224,7 @@ def main() -> int:
                 "index_page": page_url,
                 "original_filename": Path(urlparse(pdf_url).path).name,
                 "anchor_text": anchor,
-                "academic_year": infer_year(" ".join([anchor, context, pdf_url])),
+                "academic_year": infer_year(combined),
                 "term": term,
                 "document_type": "correction" if is_correction else "devoir_or_exam",
                 "branch_group": "common_or_scientific",
@@ -222,10 +234,10 @@ def main() -> int:
                 "local_path": str(destination.relative_to(ROOT)),
                 "duplicate_of": duplicate_of,
             })
-            time.sleep(0.15)
+            time.sleep(0.1)
 
     MANIFEST.write_text(json.dumps({
-        "schema_version": "1.0",
+        "schema_version": "1.1",
         "subject": "french",
         "level": "3AS",
         "branch_group": "common_or_scientific",
