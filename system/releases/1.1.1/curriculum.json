@@ -1,0 +1,161 @@
+{
+  "schemaVersion": "1.0.0",
+  "subjectId": "french",
+  "level": "3AS",
+  "language": "fr",
+  "title": "Programme de Français — 3ème Année Secondaire (toutes filières)",
+  "meta": {
+    "authority": "Ministère de l'Éducation Nationale — Programme officiel de français de la 3ème Année Secondaire",
+    "guide": "Guide du professeur, Français 3ème A.S., toutes filières (Fethi MAHBOUBI, IEF — Office National des Publications Scolaires)",
+    "notes": [
+      "Deux groupes de filières : « Lettres et Langues Étrangères » et « Techniques, Sciences Expérimentales, Mathématiques, Gestion Économie ».",
+      "Le 1er et le 4ème projets sont organisés en trois séquences ; les 2ème et 3ème en deux séquences.",
+      "L'objet d'étude « L'Appel » (projet 3) ne concerne que les classes de Lettres ; les projets 1, 2 et 4 concernent toutes les filières.",
+      "Les dars (activités détaillées par séquence) ne sont pas encore renseignés : ils seront enrichis depuis des sources officielles vérifiées. Tant qu'un mapping pointe vers un détail non confirmé, il reste à statut « probable » ou « pending_review »."
+    ],
+    "evidence": [
+      "https://eddirasa.com/wp-content/uploads/2024/12/eddirasa.com-Livre-du-professeur-en-langue-franaise-3AS.pdf",
+      "https://ecoledz.weebly.com/uploads/3/1/0/6/31060631/document_d%E2%80%99accompagnement_du_programme_3as_aout_2011.pdf"
+    ],
+    "darsNote": "empty until populated from verified official sources"
+  },
+  "filiereGroups": [
+    {
+      "id": "lettres_langues_etrangeres",
+      "label": "Lettres et Langues Étrangères",
+      "branches": [
+        "literature_philosophy",
+        "foreign_languages",
+        "arts"
+      ]
+    },
+    {
+      "id": "techniques_sciences",
+      "label": "Techniques, Sciences Expérimentales, Mathématiques, Gestion Économie",
+      "branches": [
+        "experimental_sciences",
+        "mathematics",
+        "technical_mathematics",
+        "management_economics"
+      ]
+    }
+  ],
+  "objectsOfStudy": [
+    {
+      "id": "textes_et_documents_d_histoire",
+      "label": "Textes et documents d'Histoire",
+      "projectId": "p1",
+      "filiere": "all"
+    },
+    {
+      "id": "le_debat_d_idees",
+      "label": "Le débat d'idées",
+      "projectId": "p2",
+      "filiere": "all"
+    },
+    {
+      "id": "l_appel",
+      "label": "L'Appel",
+      "projectId": "p3",
+      "filiere": "lettres_langues_etrangeres"
+    },
+    {
+      "id": "la_nouvelle_fantastique",
+      "label": "La nouvelle fantastique",
+      "projectId": "p4",
+      "filiere": "all"
+    }
+  ],
+  "projects": [
+    {
+      "id": "p1",
+      "objetEtudeId": "textes_et_documents_d_histoire",
+      "title": "Dans le cadre de la commémoration d'une journée historique, réaliser une recherche documentaire puis faire la synthèse de l'information à mettre à la disposition des élèves dans la bibliothèque de l'établissement.",
+      "intention": "Exposer des faits et manifester son esprit critique.",
+      "filiere": "all",
+      "verified": true,
+      "sequences": [
+        {
+          "id": "p1_s1",
+          "title": "Informer d'un fait d'Histoire.",
+          "verified": true
+        },
+        {
+          "id": "p1_s2",
+          "title": "Introduire un témoignage dans la relation d'un fait d'Histoire.",
+          "verified": true
+        },
+        {
+          "id": "p1_s3",
+          "title": "Analyser et commenter un fait d'Histoire.",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "id": "p2",
+      "objetEtudeId": "le_debat_d_idees",
+      "title": "Organiser un débat d'idées puis en faire un compte-rendu.",
+      "intention": "Dialoguer pour confronter des points de vue.",
+      "filiere": "all",
+      "verified": true,
+      "sequences": [
+        {
+          "id": "p2_s1",
+          "title": "S'inscrire dans un débat : convaincre ou persuader.",
+          "verified": true
+        },
+        {
+          "id": "p2_s2",
+          "title": "Prendre position dans un débat : concéder et réfuter.",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "id": "p3",
+      "objetEtudeId": "l_appel",
+      "title": "Dans le cadre d'une journée « portes ouvertes », exposer des panneaux sur lesquels seront reportés des appels afin de mobiliser les apprenants et les visiteurs autour de causes humanitaires.",
+      "intention": "Argumenter pour faire réagir.",
+      "filiere": "lettres_langues_etrangeres",
+      "verified": true,
+      "sequences": [
+        {
+          "id": "p3_s1",
+          "title": "Comprendre l'enjeu de l'appel et structurer ce dernier.",
+          "verified": true
+        },
+        {
+          "id": "p3_s2",
+          "title": "Inciter son interlocuteur à agir.",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "id": "p4",
+      "objetEtudeId": "la_nouvelle_fantastique",
+      "title": "Rédiger une nouvelle fantastique pour exprimer son imaginaire et provoquer trouble et questionnement chez le lecteur.",
+      "intention": "Exprimer (dans une nouvelle fantastique) son imaginaire et provoquer trouble et questionnement chez le lecteur.",
+      "filiere": "all",
+      "verified": true,
+      "sequences": [
+        {
+          "id": "p4_s1",
+          "title": "Introduire le fantastique dans un cadre réaliste.",
+          "verified": true
+        },
+        {
+          "id": "p4_s2",
+          "title": "Exprimer son imaginaire dans une nouvelle fantastique.",
+          "verified": true
+        },
+        {
+          "id": "p4_s3",
+          "title": "Comprendre l'enjeu de la nouvelle fantastique.",
+          "verified": true
+        }
+      ]
+    }
+  ]
+}

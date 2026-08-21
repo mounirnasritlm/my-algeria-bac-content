@@ -1,0 +1,296 @@
+[
+  {
+    "id": "function_definition",
+    "name": "Function definition",
+    "summary": "A relation that maps each input to exactly one output.",
+    "lessonId": "math_function_definition",
+    "sourceId": "demo_source"
+  },
+  {
+    "id": "function_domain",
+    "name": "Function domain",
+    "summary": "The set of inputs for which a function is defined.",
+    "lessonId": "math_function_domain",
+    "sourceId": "demo_source"
+  },
+  {
+    "id": "derivative_definition",
+    "name": "Derivative definition",
+    "summary": "The instantaneous rate of change of a function.",
+    "lessonId": "math_derivative_definition",
+    "sourceId": "demo_source"
+  },
+  {
+    "id": "motion_basics",
+    "name": "Motion basics",
+    "summary": "Position, velocity and acceleration.",
+    "lessonId": "physics_motion_basics",
+    "sourceId": "demo_source"
+  },
+  {
+    "id": "comprehension",
+    "name": "comprehension",
+    "summary": "Français 3AS — comprehension",
+    "lessonId": "french_bac_2020_s1",
+    "sourceId": "french_bac_pack"
+  },
+  {
+    "id": "visee_communicative",
+    "name": "visee communicative",
+    "summary": "Français 3AS — visee communicative",
+    "lessonId": "french_bac_2020_s1",
+    "sourceId": "french_bac_pack"
+  },
+  {
+    "id": "releve",
+    "name": "releve",
+    "summary": "Français 3AS — releve",
+    "lessonId": "french_bac_2020_s1",
+    "sourceId": "french_bac_pack"
+  },
+  {
+    "id": "champ_semantique",
+    "name": "champ semantique",
+    "summary": "Français 3AS — champ semantique",
+    "lessonId": "french_bac_2020_s1",
+    "sourceId": "french_bac_pack"
+  },
+  {
+    "id": "grammaire",
+    "name": "grammaire",
+    "summary": "Français 3AS — grammaire",
+    "lessonId": "french_bac_2020_s1",
+    "sourceId": "french_bac_pack"
+  },
+  {
+    "id": "substituts",
+    "name": "substituts",
+    "summary": "Français 3AS — substituts",
+    "lessonId": "french_bac_2020_s1",
+    "sourceId": "french_bac_pack"
+  },
+  {
+    "id": "substituts_pronominaux",
+    "name": "substituts pronominaux",
+    "summary": "Français 3AS — substituts pronominaux",
+    "lessonId": "french_bac_2020_s1",
+    "sourceId": "french_bac_pack"
+  },
+  {
+    "id": "vrai_faux",
+    "name": "vrai faux",
+    "summary": "Français 3AS — vrai faux",
+    "lessonId": "french_bac_2020_s1",
+    "sourceId": "french_bac_pack"
+  },
+  {
+    "id": "justification",
+    "name": "justification",
+    "summary": "Français 3AS — justification",
+    "lessonId": "french_bac_2020_s1",
+    "sourceId": "french_bac_pack"
+  },
+  {
+    "id": "texte_a_trous",
+    "name": "texte a trous",
+    "summary": "Français 3AS — texte a trous",
+    "lessonId": "french_bac_2020_s1",
+    "sourceId": "french_bac_pack"
+  },
+  {
+    "id": "vocabulaire",
+    "name": "vocabulaire",
+    "summary": "Français 3AS — vocabulaire",
+    "lessonId": "french_bac_2020_s1",
+    "sourceId": "french_bac_pack"
+  },
+  {
+    "id": "expression",
+    "name": "expression",
+    "summary": "Français 3AS — expression",
+    "lessonId": "french_bac_2020_s1",
+    "sourceId": "french_bac_pack"
+  },
+  {
+    "id": "opinion",
+    "name": "opinion",
+    "summary": "Français 3AS — opinion",
+    "lessonId": "french_bac_2020_s1",
+    "sourceId": "french_bac_pack"
+  },
+  {
+    "id": "production_ecrite",
+    "name": "production ecrite",
+    "summary": "Français 3AS — production ecrite",
+    "lessonId": "french_bac_2020_s1",
+    "sourceId": "french_bac_pack"
+  },
+  {
+    "id": "compte_rendu",
+    "name": "compte rendu",
+    "summary": "Français 3AS — compte rendu",
+    "lessonId": "french_bac_2020_s1",
+    "sourceId": "french_bac_pack"
+  },
+  {
+    "id": "texte_argumentatif",
+    "name": "texte argumentatif",
+    "summary": "Français 3AS — texte argumentatif",
+    "lessonId": "french_bac_2020_s1",
+    "sourceId": "french_bac_pack"
+  },
+  {
+    "id": "classement",
+    "name": "classement",
+    "summary": "Français 3AS — classement",
+    "lessonId": "french_bac_2020_s1",
+    "sourceId": "french_bac_pack"
+  },
+  {
+    "id": "qcm",
+    "name": "qcm",
+    "summary": "Français 3AS — qcm",
+    "lessonId": "french_bac_2020_s1",
+    "sourceId": "french_bac_pack"
+  },
+  {
+    "id": "idee_principale",
+    "name": "idee principale",
+    "summary": "Français 3AS — idee principale",
+    "lessonId": "french_bac_2021_s1",
+    "sourceId": "french_bac_pack"
+  },
+  {
+    "id": "reformulation",
+    "name": "reformulation",
+    "summary": "Français 3AS — reformulation",
+    "lessonId": "french_bac_2021_s1",
+    "sourceId": "french_bac_pack"
+  },
+  {
+    "id": "explication",
+    "name": "explication",
+    "summary": "Français 3AS — explication",
+    "lessonId": "french_bac_2021_s1",
+    "sourceId": "french_bac_pack"
+  },
+  {
+    "id": "articulateur",
+    "name": "articulateur",
+    "summary": "Français 3AS — articulateur",
+    "lessonId": "french_bac_2021_s1",
+    "sourceId": "french_bac_pack"
+  },
+  {
+    "id": "consequence",
+    "name": "consequence",
+    "summary": "Français 3AS — consequence",
+    "lessonId": "french_bac_2021_s1",
+    "sourceId": "french_bac_pack"
+  },
+  {
+    "id": "consequence_articulateur",
+    "name": "consequence articulateur",
+    "summary": "Français 3AS — consequence articulateur",
+    "lessonId": "french_bac_2021_s1",
+    "sourceId": "french_bac_pack"
+  },
+  {
+    "id": "coordination",
+    "name": "coordination",
+    "summary": "Français 3AS — coordination",
+    "lessonId": "french_bac_2021_s1",
+    "sourceId": "french_bac_pack"
+  },
+  {
+    "id": "sentiment",
+    "name": "sentiment",
+    "summary": "Français 3AS — sentiment",
+    "lessonId": "french_bac_2021_s1",
+    "sourceId": "french_bac_pack"
+  },
+  {
+    "id": "vocabulaire_contexte",
+    "name": "vocabulaire contexte",
+    "summary": "Français 3AS — vocabulaire contexte",
+    "lessonId": "french_bac_2022_s1",
+    "sourceId": "french_bac_pack"
+  },
+  {
+    "id": "chronologie",
+    "name": "chronologie",
+    "summary": "Français 3AS — chronologie",
+    "lessonId": "french_bac_2022_s1",
+    "sourceId": "french_bac_pack"
+  },
+  {
+    "id": "chronologie_indicateurs_temps",
+    "name": "chronologie indicateurs temps",
+    "summary": "Français 3AS — chronologie indicateurs temps",
+    "lessonId": "french_bac_2022_s1",
+    "sourceId": "french_bac_pack"
+  },
+  {
+    "id": "rapport_logique",
+    "name": "rapport logique",
+    "summary": "Français 3AS — rapport logique",
+    "lessonId": "french_bac_2022_s1",
+    "sourceId": "french_bac_pack"
+  },
+  {
+    "id": "cause",
+    "name": "cause",
+    "summary": "Français 3AS — cause",
+    "lessonId": "french_bac_2022_s1",
+    "sourceId": "french_bac_pack"
+  },
+  {
+    "id": "cause_rapport_logique",
+    "name": "cause rapport logique",
+    "summary": "Français 3AS — cause rapport logique",
+    "lessonId": "french_bac_2022_s1",
+    "sourceId": "french_bac_pack"
+  },
+  {
+    "id": "expression_figurée",
+    "name": "expression figurée",
+    "summary": "Français 3AS — expression figurée",
+    "lessonId": "french_bac_2023_s1",
+    "sourceId": "french_bac_pack"
+  },
+  {
+    "id": "texte_narratif",
+    "name": "texte narratif",
+    "summary": "Français 3AS — texte narratif",
+    "lessonId": "french_bac_2023_s1",
+    "sourceId": "french_bac_pack"
+  },
+  {
+    "id": "voix_passive",
+    "name": "voix passive",
+    "summary": "Français 3AS — voix passive",
+    "lessonId": "french_bac_2026_s1",
+    "sourceId": "french_bac_pack"
+  },
+  {
+    "id": "compte_rendu_objectif",
+    "name": "compte rendu objectif",
+    "summary": "Français 3AS — compte rendu objectif",
+    "lessonId": "french_bac_2026_s1",
+    "sourceId": "french_bac_pack"
+  },
+  {
+    "id": "evenement",
+    "name": "evenement",
+    "summary": "Français 3AS — evenement",
+    "lessonId": "french_bac_2026_s1",
+    "sourceId": "french_bac_pack"
+  },
+  {
+    "id": "appel",
+    "name": "appel",
+    "summary": "Français 3AS — appel",
+    "lessonId": "french_bac_2026_s1",
+    "sourceId": "french_bac_pack"
+  }
+]

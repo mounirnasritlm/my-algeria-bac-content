@@ -1,0 +1,72 @@
+[
+  {
+    "id": "demo_source",
+    "type": "demo",
+    "name": "MY Algeria BAC demo content",
+    "author": "MY Algeria BAC",
+    "url": null,
+    "publication": null,
+    "year": "2026",
+    "verified": false
+  },
+  {
+    "id": "site_dzexams",
+    "type": "website",
+    "name": "DzExams",
+    "author": null,
+    "url": "https://www.dzexams.com",
+    "publication": null,
+    "year": null,
+    "verified": false
+  },
+  {
+    "id": "site_eddirasa",
+    "type": "website",
+    "name": "Eddirasa",
+    "author": null,
+    "url": "https://eddirasa.com",
+    "publication": null,
+    "year": null,
+    "verified": false
+  },
+  {
+    "id": "site_bac_algerie",
+    "type": "website",
+    "name": "Bac-Algerie",
+    "author": null,
+    "url": "https://bac-algerie.net",
+    "publication": null,
+    "year": null,
+    "verified": false
+  },
+  {
+    "id": "site_bacdz",
+    "type": "website",
+    "name": "BacDZ",
+    "author": null,
+    "url": "https://bacdz.net",
+    "publication": null,
+    "year": null,
+    "verified": false
+  },
+  {
+    "id": "site_ency_education",
+    "type": "website",
+    "name": "EncyEducation",
+    "author": null,
+    "url": "https://www.ency-education.com",
+    "publication": null,
+    "year": null,
+    "verified": false
+  },
+  {
+    "id": "french_bac_pack",
+    "type": "editorial",
+    "name": "French BAC structured pack (transcribed from official papers)",
+    "author": "MY Algeria BAC",
+    "url": null,
+    "publication": null,
+    "year": "2026",
+    "verified": false
+  }
+]

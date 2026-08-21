@@ -1,0 +1,60 @@
+[
+  {
+    "id": "math_functions",
+    "subjectId": "mathematics",
+    "names": {
+      "ar": "الدوال",
+      "fr": "Fonctions",
+      "en": "Functions"
+    },
+    "lessonIds": [
+      "math_function_definition",
+      "math_function_domain"
+    ],
+    "order": 1
+  },
+  {
+    "id": "math_derivatives",
+    "subjectId": "mathematics",
+    "names": {
+      "ar": "الاشتقاق",
+      "fr": "Dérivation",
+      "en": "Derivatives"
+    },
+    "lessonIds": [
+      "math_derivative_definition"
+    ],
+    "order": 2
+  },
+  {
+    "id": "physics_motion",
+    "subjectId": "physics",
+    "names": {
+      "ar": "الحركة",
+      "fr": "Mouvement",
+      "en": "Motion"
+    },
+    "lessonIds": [
+      "physics_motion_basics"
+    ],
+    "order": 1
+  },
+  {
+    "id": "french_bac_papers",
+    "subjectId": "french",
+    "names": {
+      "ar": "مواضيع البكالوريا",
+      "fr": "Sujets de BAC",
+      "en": "BAC papers"
+    },
+    "lessonIds": [
+      "french_bac_2020_s1",
+      "french_bac_2021_s1",
+      "french_bac_2022_s1",
+      "french_bac_2023_s1",
+      "french_bac_2026_s1"
+    ],
+    "order": 1,
+    "sourceId": "french_bac_pack"
+  }
+]

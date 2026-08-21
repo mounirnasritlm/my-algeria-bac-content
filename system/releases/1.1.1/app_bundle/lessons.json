@@ -1,0 +1,271 @@
+[
+  {
+    "id": "math_function_definition",
+    "subjectId": "mathematics",
+    "chapterId": "math_functions",
+    "title": {
+      "ar": "مفهوم الدالة",
+      "fr": "Notion de fonction",
+      "en": "Function concept"
+    },
+    "description": {
+      "ar": "محتوى تجريبي.",
+      "fr": "Contenu de démonstration.",
+      "en": "Demo content."
+    },
+    "conceptIds": [
+      "function_definition"
+    ],
+    "estimatedMinutes": 15,
+    "sourceId": "demo_source"
+  },
+  {
+    "id": "math_function_domain",
+    "subjectId": "mathematics",
+    "chapterId": "math_functions",
+    "title": {
+      "ar": "مجال التعريف",
+      "fr": "Domaine de définition",
+      "en": "Domain"
+    },
+    "description": {
+      "ar": "محتوى تجريبي.",
+      "fr": "Contenu de démonstration.",
+      "en": "Demo content."
+    },
+    "conceptIds": [
+      "function_domain"
+    ],
+    "estimatedMinutes": 15,
+    "sourceId": "demo_source"
+  },
+  {
+    "id": "math_derivative_definition",
+    "subjectId": "mathematics",
+    "chapterId": "math_derivatives",
+    "title": {
+      "ar": "مفهوم المشتقة",
+      "fr": "Notion de dérivée",
+      "en": "Derivative concept"
+    },
+    "description": {
+      "ar": "محتوى تجريبي.",
+      "fr": "Contenu de démonstration.",
+      "en": "Demo content."
+    },
+    "conceptIds": [
+      "derivative_definition"
+    ],
+    "estimatedMinutes": 20,
+    "sourceId": "demo_source"
+  },
+  {
+    "id": "physics_motion_basics",
+    "subjectId": "physics",
+    "chapterId": "physics_motion",
+    "title": {
+      "ar": "أساسيات الحركة",
+      "fr": "Les bases du mouvement",
+      "en": "Basics of motion"
+    },
+    "description": {
+      "ar": "محتوى تجريبي.",
+      "fr": "Contenu de démonstration.",
+      "en": "Demo content."
+    },
+    "conceptIds": [
+      "motion_basics"
+    ],
+    "estimatedMinutes": 15,
+    "sourceId": "demo_source"
+  },
+  {
+    "id": "french_bac_2020_s1",
+    "subjectId": "french",
+    "chapterId": "french_bac_papers",
+    "title": {
+      "ar": "بكالوريا 2020 — لغة فرنسية",
+      "fr": "BAC 2020 — Français",
+      "en": "BAC 2020 — French"
+    },
+    "description": {
+      "ar": "أسئلة مهيكلة من موضوع البكالوريا الرسمي مع التصحيح الرسمي.",
+      "fr": "Questions structurées du sujet officiel du BAC avec correction officielle.",
+      "en": "Structured questions from the official BAC paper with official correction."
+    },
+    "conceptIds": [
+      "comprehension",
+      "visee_communicative",
+      "releve",
+      "champ_semantique",
+      "grammaire",
+      "substituts",
+      "substituts_pronominaux",
+      "vrai_faux",
+      "justification",
+      "texte_a_trous",
+      "vocabulaire",
+      "expression",
+      "opinion",
+      "production_ecrite",
+      "compte_rendu",
+      "texte_argumentatif",
+      "classement",
+      "qcm"
+    ],
+    "estimatedMinutes": 60,
+    "sourceId": "french_bac_pack"
+  },
+  {
+    "id": "french_bac_2021_s1",
+    "subjectId": "french",
+    "chapterId": "french_bac_papers",
+    "title": {
+      "ar": "بكالوريا 2021 — لغة فرنسية",
+      "fr": "BAC 2021 — Français",
+      "en": "BAC 2021 — French"
+    },
+    "description": {
+      "ar": "أسئلة مهيكلة من موضوع البكالوريا الرسمي مع التصحيح الرسمي.",
+      "fr": "Questions structurées du sujet officiel du BAC avec correction officielle.",
+      "en": "Structured questions from the official BAC paper with official correction."
+    },
+    "conceptIds": [
+      "comprehension",
+      "idee_principale",
+      "reformulation",
+      "classement",
+      "grammaire",
+      "substituts",
+      "substituts_pronominaux",
+      "releve",
+      "explication",
+      "articulateur",
+      "consequence",
+      "consequence_articulateur",
+      "expression",
+      "opinion",
+      "production_ecrite",
+      "compte_rendu",
+      "texte_argumentatif",
+      "coordination",
+      "sentiment"
+    ],
+    "estimatedMinutes": 60,
+    "sourceId": "french_bac_pack"
+  },
+  {
+    "id": "french_bac_2022_s1",
+    "subjectId": "french",
+    "chapterId": "french_bac_papers",
+    "title": {
+      "ar": "بكالوريا 2022 — لغة فرنسية",
+      "fr": "BAC 2022 — Français",
+      "en": "BAC 2022 — French"
+    },
+    "description": {
+      "ar": "أسئلة مهيكلة من موضوع البكالوريا الرسمي مع التصحيح الرسمي.",
+      "fr": "Questions structurées du sujet officiel du BAC avec correction officielle.",
+      "en": "Structured questions from the official BAC paper with official correction."
+    },
+    "conceptIds": [
+      "comprehension",
+      "idee_principale",
+      "vocabulaire_contexte",
+      "vrai_faux",
+      "releve",
+      "grammaire",
+      "substituts",
+      "substituts_pronominaux",
+      "chronologie",
+      "chronologie_indicateurs_temps",
+      "visee_communicative",
+      "expression",
+      "opinion",
+      "production_ecrite",
+      "compte_rendu",
+      "texte_argumentatif",
+      "reformulation",
+      "rapport_logique",
+      "cause",
+      "cause_rapport_logique",
+      "classement"
+    ],
+    "estimatedMinutes": 60,
+    "sourceId": "french_bac_pack"
+  },
+  {
+    "id": "french_bac_2023_s1",
+    "subjectId": "french",
+    "chapterId": "french_bac_papers",
+    "title": {
+      "ar": "بكالوريا 2023 — لغة فرنسية",
+      "fr": "BAC 2023 — Français",
+      "en": "BAC 2023 — French"
+    },
+    "description": {
+      "ar": "أسئلة مهيكلة من موضوع البكالوريا الرسمي مع التصحيح الرسمي.",
+      "fr": "Questions structurées du sujet officiel du BAC avec correction officielle.",
+      "en": "Structured questions from the official BAC paper with official correction."
+    },
+    "conceptIds": [
+      "comprehension",
+      "idee_principale",
+      "releve",
+      "champ_semantique",
+      "classement",
+      "grammaire",
+      "substituts",
+      "substituts_pronominaux",
+      "visee_communicative",
+      "expression",
+      "opinion",
+      "production_ecrite",
+      "compte_rendu",
+      "texte_argumentatif",
+      "expression_figurée",
+      "vrai_faux",
+      "texte_narratif"
+    ],
+    "estimatedMinutes": 60,
+    "sourceId": "french_bac_pack"
+  },
+  {
+    "id": "french_bac_2026_s1",
+    "subjectId": "french",
+    "chapterId": "french_bac_papers",
+    "title": {
+      "ar": "بكالوريا 2026 — لغة فرنسية",
+      "fr": "BAC 2026 — Français",
+      "en": "BAC 2026 — French"
+    },
+    "description": {
+      "ar": "أسئلة مهيكلة من موضوع البكالوريا الرسمي مع التصحيح الرسمي.",
+      "fr": "Questions structurées du sujet officiel du BAC avec correction officielle.",
+      "en": "Structured questions from the official BAC paper with official correction."
+    },
+    "conceptIds": [
+      "comprehension",
+      "idee_principale",
+      "releve",
+      "classement",
+      "grammaire",
+      "substituts",
+      "substituts_pronominaux",
+      "voix_passive",
+      "visee_communicative",
+      "explication",
+      "production_ecrite",
+      "compte_rendu",
+      "texte_argumentatif",
+      "compte_rendu_objectif",
+      "evenement",
+      "vocabulaire",
+      "expression_figurée",
+      "vrai_faux",
+      "appel"
+    ],
+    "estimatedMinutes": 60,
+    "sourceId": "french_bac_pack"
+  }
+]

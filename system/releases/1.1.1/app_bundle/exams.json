@@ -1,0 +1,30 @@
+[
+  {
+    "id": "e_math_001",
+    "subjectId": "mathematics",
+    "year": "2026",
+    "stream": "demo",
+    "durationMinutes": 180,
+    "sections": [
+      {
+        "id": "e_math_001_s1",
+        "title": "Demo exercise 1",
+        "questionIds": [
+          "q_math_001",
+          "q_math_002",
+          "q_math_003"
+        ]
+      },
+      {
+        "id": "e_math_001_s2",
+        "title": "Demo exercise 2",
+        "questionIds": [
+          "q_math_004",
+          "q_math_005"
+        ]
+      }
+    ],
+    "scoringInfo": "Demo scoring.",
+    "sourceId": "demo_source"
+  }
+]
